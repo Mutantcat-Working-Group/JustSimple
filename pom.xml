@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 父项目的基本信息 -->
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>JustSimple</artifactId>
+    <version>1.0.20250318</version>
+    <packaging>pom</packaging>
+
+    <name>Just Simple</name>
+    <url>https://www.mutantcat.org/</url>
+    <description>仅见JavaApi快速开发框架</description>
+
+    <!-- 子模块 -->
+    <modules>
+        <module>justsimple-core</module>
+    </modules>
+
+    <properties>
+        <netty.version>4.1.75.Final</netty.version>
+        <snake-yaml.version>1.33</snake-yaml.version>
+    </properties>
+
+    <!-- 公共依赖管理 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- 定义子模块可以共享的依赖版本 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snake-yaml.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 公共构建配置 -->
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Maven 编译插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <source>1.8</source> <!-- Java 源代码版本 -->
+                        <target>1.8</target> <!-- 字节码版本 -->
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
