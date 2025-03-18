@@ -6,6 +6,7 @@ org\mutantcat\justsimple\web\NettyWithController.class
 org\mutantcat\justsimple\scanner\ControllerScanner.class
 org\mutantcat\justsimple\starter\ApplicationStarter.class
 org\mutantcat\justsimple\annotation\Handler.class
+org\mutantcat\justsimple\web\FileUploadHandler.class
 org\mutantcat\justsimple\annotation\JustSimple.class
 org\mutantcat\justsimple\request\Context.class
 org\mutantcat\justsimple\annotation\Controller.class
@@ -14,3 +15,4 @@ org\mutantcat\justsimple\web\NettyWithController$1.class
 org\mutantcat\justsimple\config\Config.class
 org\mutantcat\justsimple\scanner\StarterApplicationScanner.class
 org\mutantcat\justsimple\annotation\Instance.class
+org\mutantcat\justsimple\web\FileUploadHandler$TempFile.class

@@ -6,10 +6,16 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.multipart.*;
+import io.netty.util.CharsetUtil;
 import org.mutantcat.justsimple.instance.InstanceHandler;
 import org.mutantcat.justsimple.request.Context;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NettyWithController {
@@ -39,9 +45,63 @@ public class NettyWithController {
                             pipeline.addLast(new SimpleChannelInboundHandler<FullHttpRequest>() {
                                 @Override
                                 protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-                                    String uri = request.uri();
+                                    QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.uri());
+                                    Map<String, List<String>> parameters = queryStringDecoder.parameters();
+                                    String uri = queryStringDecoder.path();
                                     Method method = handlerMap.get(uri);
                                     Object singletonObject = null;
+                                    String json = "";
+                                    Map<String, Object> formData = new HashMap<>();
+
+                                    if (request.method() == HttpMethod.POST) {
+                                        String contentType = request.headers().get(HttpHeaderNames.CONTENT_TYPE);
+                                        // 检查 Content-Type 是否为 application/json
+                                        if (HttpHeaderValues.APPLICATION_JSON.contentEqualsIgnoreCase(contentType)) {
+                                            // 获取请求体
+                                            json = request.content().toString(CharsetUtil.UTF_8);
+                                        } else if (contentType.startsWith(HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())) {
+                                            // 处理 application/x-www-form-urlencoded
+                                            QueryStringDecoder postDecoder = new QueryStringDecoder(request.content().toString(CharsetUtil.UTF_8), false);
+                                            postDecoder.parameters().forEach((key, value) -> formData.put(key, value.get(0))); // 只取第一个值
+                                        } else if (contentType.startsWith(HttpHeaderValues.MULTIPART_FORM_DATA.toString())) {
+                                            HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(new DefaultHttpDataFactory(false), request);
+                                            try {
+                                                decoder.offer(request); // 提供数据进行解码
+                                                List<InterfaceHttpData> bodyHttpDatas = decoder.getBodyHttpDatas(); // 获取所有数据片段
+                                                for (InterfaceHttpData data : bodyHttpDatas) {
+                                                    try {
+                                                        if (data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute) {
+                                                            // 普通字段
+                                                            Attribute attribute = (Attribute) data;
+                                                            formData.put(attribute.getName(), attribute.getValue());
+                                                        } else if (data.getHttpDataType() == InterfaceHttpData.HttpDataType.FileUpload) {
+                                                            // 文件字段
+                                                            FileUpload fileUpload = (FileUpload) data;
+                                                            if (fileUpload.isCompleted()) {
+                                                                try {
+                                                                    // 使用 FileUploadHandler 将文件保存到临时文件
+                                                                    FileUploadHandler.TempFile tempFile = FileUploadHandler.saveToTemporaryFile(fileUpload,fileUpload.content());
+
+                                                                    // 将临时文件对象存入 Map
+                                                                    formData.put(fileUpload.getName(), tempFile);
+                                                                } catch (Exception e) {
+                                                                    e.printStackTrace();
+                                                                    System.err.println("Failed to save file: " + fileUpload.getFilename());
+                                                                }
+                                                            }
+                                                        }
+                                                    } finally {
+                                                        data.release(); // 释放当前数据片段
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace(); // 捕获并打印解码异常
+                                            } finally {
+                                                decoder.destroy(); // 释放解码器资源
+                                            }
+                                        }
+
+                                    }
 
 
                                     // 看看单例中是否有注册的
@@ -59,7 +119,11 @@ public class NettyWithController {
                                             // 若没有注册的单例 或者注册的单例中没有@Handler修饰的方法 通过反射调用 Handler 方法
                                             controllerInstance = method.getDeclaringClass().getDeclaredConstructor().newInstance();
                                         }
-                                        String responseContent = (String) method.invoke(controllerInstance, new Context(request));
+                                        String responseContent = (String) method.invoke(controllerInstance, new Context(request, parameters, json, formData));
+
+                                        if (responseContent == null) {
+                                            responseContent = "null";
+                                        }
 
                                         // 构建 HTTP 响应
                                         FullHttpResponse response = new DefaultFullHttpResponse(
