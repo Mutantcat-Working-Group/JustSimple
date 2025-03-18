@@ -6,13 +6,14 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.cors.CorsConfig;
+import io.netty.handler.codec.http.cors.CorsHandler;
 import io.netty.handler.codec.http.multipart.*;
 import io.netty.util.CharsetUtil;
+import org.mutantcat.justsimple.config.Config;
 import org.mutantcat.justsimple.instance.InstanceHandler;
 import org.mutantcat.justsimple.request.Context;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,12 @@ public class NettyWithController {
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new HttpServerCodec());
                             pipeline.addLast(new HttpObjectAggregator(65536));
+                            // 配置跨域规则
+                            CorsConfig corsConfig = ((Config) InstanceHandler.getInstance("just_simple_config")).getCorsConfig();
+                            if(corsConfig!=null) {
+                                // 添加 CORS 处理器
+                                pipeline.addLast(new CorsHandler(corsConfig));
+                            }
                             pipeline.addLast(new SimpleChannelInboundHandler<FullHttpRequest>() {
                                 @Override
                                 protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {

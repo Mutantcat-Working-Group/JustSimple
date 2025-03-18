@@ -2,7 +2,6 @@ package org.mutantcat.justsimple.request;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.multipart.FileUpload;
 import org.mutantcat.justsimple.web.FileUploadHandler;
 
 import java.util.ArrayList;

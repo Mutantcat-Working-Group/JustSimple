@@ -27,7 +27,7 @@ public class InstanceScanner {
                             System.out.println("注册了实例：" + clazz.getName());
                             InstanceHandler.putInstance(clazz.getName(), clazz.newInstance());
                         } else {
-                            System.out.println("注册了实例：" + instance.name());
+                            System.out.println("注册了实例：" + instance.name() + " -> " + clazz.getName());
                             InstanceHandler.putInstance(instance.name(), clazz.newInstance());
                         }
                     }

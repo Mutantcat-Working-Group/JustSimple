@@ -3,7 +3,6 @@ package org.mutantcat.justsimple.web;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.multipart.FileUpload;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -13,10 +12,12 @@ public class FileUploadHandler {
     public static class TempFile {
         private FileUpload fileUpload;
         private ByteBuf byteBuf;
+        private String fileName;
 
         public TempFile(FileUpload fileUpload, ByteBuf byteBuf) {
             this.fileUpload = fileUpload;
             this.byteBuf = byteBuf.copy();
+            this.fileName = fileUpload.getFilename();
         }
 
         public FileUpload getFileUpload() {
@@ -25,6 +26,10 @@ public class FileUploadHandler {
 
         public ByteBuf getByteBuf() {
             return byteBuf;
+        }
+
+        public String getFileName() {
+            return fileName;
         }
     }
 
