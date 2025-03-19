@@ -7,27 +7,12 @@
     <!-- 父项目的基本信息 -->
     <groupId>org.mutantcat.justsimple</groupId>
     <artifactId>JustSimple</artifactId>
-    <version>1.0.20250323</version>
+    <version>1.0.20250322</version>
     <packaging>pom</packaging>
 
     <name>Just Simple</name>
     <url>https://www.mutantcat.org/</url>
     <description>仅见JavaApi快速开发框架</description>
-
-    <licenses>
-        <license>
-            <name>The Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>mutantcat</id>
-            <name>mutantcat</name>
-            <email>mutantcat_org@example.com</email>
-        </developer>
-    </developers>
 
     <scm>
         <connection>scm:git:https://github.com/your-github-account/JustSimple.git</connection>
