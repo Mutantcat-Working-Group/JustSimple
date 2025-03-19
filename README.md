@@ -91,6 +91,7 @@ import io.netty.handler.codec.http.cors.CorsConfigBuilder;
 import org.mutantcat.justsimple.instance.InstanceHandler;
 
 public class ConfigHandler {
+    // 之后需要在启动方法前调用args = ConfigHandler.doConfig(args);
     public static String[] doConfig(String[] args) {
         // 配置信息 可以存入一个配置类的 当然这个配置实例也可以使用@Instance注解自动注册
         CorsConfig corsConfig = CorsConfigBuilder.forAnyOrigin() // 允许任意来源
