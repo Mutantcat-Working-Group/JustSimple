@@ -149,7 +149,7 @@ public class CorsConfig {
 | corsConfig:配置实例名 | io.netty.handler.codec.http.cors.CorsConfig | 跨域规则配置 |
 | port:配置实例名       | java.lang.Integer                           | 程序运行端口 |
 
-### 八、其他说明
+### 十、其他说明
 
 - resourse下的application.yaml就是配置文件
 - Controller必须放到controller包下（强制规范）
@@ -157,6 +157,7 @@ public class CorsConfig {
 - 只需将配置传入args中即可，注意配置的时候:前第一个是固定的配置名，:后第二个是注册的实例名
 - 注意是英文冒号，普通的配置的Object类型要与列表中对应
 - 代码配置优先级大于配置文件配置，自动注册的Instance优先级大于启动语句前配置的
+- 样例：https://github.com/tyza66/JustSimpleDemo
 
 
 
