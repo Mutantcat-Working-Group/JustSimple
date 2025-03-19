@@ -7,7 +7,7 @@
     <!-- 父项目的基本信息 -->
     <groupId>org.mutantcat.justsimple</groupId>
     <artifactId>JustSimple</artifactId>
-    <version>1.0.20250323</version>
+    <version>1.0.20250324</version>
     <packaging>pom</packaging>
 
     <name>Just Simple</name>
