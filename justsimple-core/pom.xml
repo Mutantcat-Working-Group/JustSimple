@@ -12,7 +12,7 @@
 
     <groupId>org.mutantcat.justsimple</groupId>
     <artifactId>justsimple-core</artifactId>
-    <version>1.0.20250322</version>
+    <version>1.0.20250323</version>
     <packaging>jar</packaging>
     <url>https://www.mutantcat.org/</url>
     <description>仅见JavaApi快速开发框架-核心</description>
