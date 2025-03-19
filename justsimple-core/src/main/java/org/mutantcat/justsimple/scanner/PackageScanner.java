@@ -1,6 +1,7 @@
 package org.mutantcat.justsimple.scanner;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +11,10 @@ public class PackageScanner {
     public static Set<Class<?>> scanPackage(String packageName) throws Exception {
         Set<Class<?>> classes = new HashSet<>();
         String path = packageName.replace('.', '/');
+        URL resource = Thread.currentThread().getContextClassLoader().getResource(path);
+        if (resource == null) {
+            return classes;
+        }
         String classPath = Thread.currentThread().getContextClassLoader().getResource(path).getPath();
 
         File directory = new File(classPath);

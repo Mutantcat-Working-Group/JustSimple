@@ -8,6 +8,7 @@ import org.mutantcat.justsimple.scanner.StarterApplicationScanner;
 import org.mutantcat.justsimple.web.NettyWithController;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ApplicationStarter {
@@ -21,8 +22,8 @@ public class ApplicationStarter {
         InstanceHandler.putInstance("just_simple_config", new Config());
         // 扫描基础包下的所有Instance类之后进行注册
         InstanceScanner.scan(scan);
-        Map<String, Method> handlerMap = null;
-        Map<String, String> singletonMap = null;
+        Map<String, Method> handlerMap = new HashMap<>();
+        Map<String, String> singletonMap = new HashMap<>();
         try {
             handlerMap = ControllerScanner.scanHandlers(scan+".controller");
             singletonMap = ControllerScanner.scanSingletonHandlers(scan+".controller");
