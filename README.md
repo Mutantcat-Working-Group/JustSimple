@@ -158,6 +158,9 @@ public class CorsConfig {
 - 只需将配置传入args中即可，注意配置的时候:前第一个是固定的配置名，:后第二个是注册的实例名
 - 注意是英文冒号，普通的配置的Object类型要与列表中对应
 - 代码配置优先级大于配置文件配置，自动注册的Instance优先级大于启动语句前配置的
+- 若想使用单例Controller，直接添加@Instance和@Controller两个注解即可
+- @Instance常用的用法并非上述例子中当构造方法调用器用
+- 实际上@Instance的作用是将其注解的类的一个实例自动注册到实例池里，还可以使用name参数指定注册名（默认是类路径）
 - 样例：https://github.com/tyza66/JustSimpleDemo
 
 
