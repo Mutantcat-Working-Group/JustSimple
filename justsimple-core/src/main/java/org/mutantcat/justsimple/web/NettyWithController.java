@@ -126,7 +126,7 @@ public class NettyWithController {
                                             // 若没有注册的单例 或者注册的单例中没有@Handler修饰的方法 通过反射调用 Handler 方法
                                             controllerInstance = method.getDeclaringClass().getDeclaredConstructor().newInstance();
                                         }
-                                        String responseContent = (String) method.invoke(controllerInstance, new Context(request, parameters, json, formData));
+                                        String responseContent = (String) method.invoke(controllerInstance, new Context(request, parameters, json, formData)).toString();
 
                                         if (responseContent == null) {
                                             responseContent = "null";
