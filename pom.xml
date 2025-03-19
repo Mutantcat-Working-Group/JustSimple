@@ -42,7 +42,7 @@
 
     <properties>
         <netty.version>4.1.75.Final</netty.version>
-        <snake-yaml.version>1.33</snake-yaml.version>
+        <snake-yaml.version>2.0</snake-yaml.version>
     </properties>
 
     <!-- 公共依赖管理 -->
