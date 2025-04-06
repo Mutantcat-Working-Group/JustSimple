@@ -1,5 +1,5 @@
 <div align=center>
-<img src="https://s2.loli.net/2025/03/19/Gf9yaFAJmnVWIBH.png" style="width:100px;"/>
+<img src="https://s2.loli.net/2025/03/19/Gf9yaFAJmnVWIBH.png" style="width:100px;" width="100"/>
 <h2>仅见</h2>
 </div>
 
