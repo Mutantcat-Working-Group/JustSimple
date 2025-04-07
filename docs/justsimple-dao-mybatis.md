@@ -39,7 +39,7 @@
             <version>8.0.32</version>
         </dependency>
 
-    </dependencies>
+</dependencies>
 ```
 
 - 创建resources下的mybatis-config.xml（修改为自己想要配置，若不配置则引入无效）
