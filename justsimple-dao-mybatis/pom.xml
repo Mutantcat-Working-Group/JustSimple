@@ -4,15 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- 父项目的基本信息 -->
-    <groupId>org.mutantcat.justsimple</groupId>
-    <artifactId>JustSimple</artifactId>
-    <version>1.0.20250407</version>
-    <packaging>pom</packaging>
+    <parent>
+        <artifactId>JustSimple</artifactId>
+        <groupId>org.mutantcat.justsimple</groupId>
+        <version>1.0.20250407</version>
+    </parent>
 
-    <name>Just Simple</name>
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>justsimple-dao-mybatis</artifactId>
+    <version>1.0.20250407</version>
+    <packaging>jar</packaging>
     <url>https://www.mutantcat.org/</url>
-    <description>仅见JavaApi快速开发框架</description>
+    <description>仅见JavaApi快速开发框架-mybatis持久层</description>
+
+    <scm>
+        <connection>scm:git:git://github.com/Mutantcat-Working-Group/JustSimple.git</connection>
+        <developerConnection>scm:git:ssh://github.com/Mutantcat-Working-Group/JustSimple.git</developerConnection>
+        <url>http://github.com/Mutantcat-Working-Group/JustSimple/tree/master</url>
+    </scm>
 
     <licenses>
         <license>
@@ -29,65 +38,35 @@
         </developer>
     </developers>
 
-    <scm>
-        <connection>scm:git:https://github.com/your-github-account/JustSimple.git</connection>
-        <developerConnection>scm:git:https://github.com/your-github-account/JustSimple.git</developerConnection>
-        <url>https://github.com/your-github-account/JustSimple</url>
-    </scm>
-
-    <!-- 子模块 -->
-    <modules>
-        <module>justsimple-core</module>
-        <module>justsimple-dao-mybatis</module>
-    </modules>
-
     <properties>
-        <justsimple.version>1.0.20250407</justsimple.version>
-        <netty.version>4.1.118.Final</netty.version>
-        <snake-yaml.version>2.0</snake-yaml.version>
-        <mybatis.version>3.5.7</mybatis.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!-- 公共依赖管理 -->
-    <dependencyManagement>
-        <dependencies>
-            <!-- 定义子模块可以共享的依赖版本 -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-common</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-core</artifactId>
+            <version>${justsimple.version}</version>
+        </dependency>
 
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.yaml</groupId>
-                <artifactId>snakeyaml</artifactId>
-                <version>${snake-yaml.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${mybatis.version}</version>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+    </dependencies>
 
     <distributionManagement>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
         <snapshotRepository>
             <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
     </distributionManagement>
 
     <build>
@@ -159,4 +138,5 @@
             <url>https://repo.maven.apache.org/maven2</url>
         </repository>
     </repositories>
+
 </project>

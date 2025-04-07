@@ -21,6 +21,9 @@ public class ApplicationStarter {
         System.out.println("扫描到基础包：" + scan);
         // 初始化配置
         InstanceHandler.putInstance("just_simple_config", new Config());
+        // 扫描库中的所有Instance类进行注册
+        InstanceScanner.scan("org.mutantcat.justsimple");
+        InstanceScanner.scan("org.mutantcat.justsimple.dao.mybatis");
         // 扫描基础包下的所有Instance类之后进行注册
         InstanceScanner.scan(scan);
         Map<String, Method> handlerMap = new HashMap<>();

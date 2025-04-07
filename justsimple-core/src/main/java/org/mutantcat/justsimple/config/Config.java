@@ -7,7 +7,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;
 import java.util.Map;
 
-@Instance
+//@Instance(name = "just_simple_config")
 public class Config {
     Map<String, Object> config;
     CorsConfig corsConfig;
@@ -21,8 +21,8 @@ public class Config {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(config.get("port")==null){
-            config.put("port",7891);
+        if (config.get("port") == null) {
+            config.put("port", 7891);
         }
         corsConfig = null;
     }

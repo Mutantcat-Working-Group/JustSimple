@@ -17,7 +17,7 @@
     <dependency>
         <groupId>org.mutantcat.justsimple</groupId>
         <artifactId>justsimple-core</artifactId>
-        <version>1.0.20250324</version>
+        <version>1.0.20250407</version>
     </dependency>
 </dependencies>
 ```

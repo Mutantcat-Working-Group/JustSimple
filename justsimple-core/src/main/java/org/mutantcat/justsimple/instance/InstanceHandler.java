@@ -8,8 +8,8 @@ public class InstanceHandler {
     private static final ConcurrentHashMap<String, Object> INSTANCES = new ConcurrentHashMap<>();
 
     // 获取实例
-    public static Object getInstance(String name) {
-        return INSTANCES.get(name);
+    public static <T> T getInstance(String name) {
+        return (T) INSTANCES.get(name);
     }
 
     // 存储实例

@@ -15,6 +15,8 @@ import org.mutantcat.justsimple.instance.InstanceHandler;
 import org.mutantcat.justsimple.request.Context;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +47,7 @@ public class NettyWithController {
                             pipeline.addLast(new HttpObjectAggregator(65536));
                             // 配置跨域规则
                             CorsConfig corsConfig = ((Config) InstanceHandler.getInstance("just_simple_config")).getCorsConfig();
-                            if(corsConfig!=null) {
+                            if (corsConfig != null) {
                                 // 添加 CORS 处理器
                                 pipeline.addLast(new CorsHandler(corsConfig));
                             }
@@ -87,7 +89,7 @@ public class NettyWithController {
                                                             if (fileUpload.isCompleted()) {
                                                                 try {
                                                                     // 使用 FileUploadHandler 将文件保存到临时文件
-                                                                    FileUploadHandler.TempFile tempFile = FileUploadHandler.saveToTemporaryFile(fileUpload,fileUpload.content());
+                                                                    FileUploadHandler.TempFile tempFile = FileUploadHandler.saveToTemporaryFile(fileUpload, fileUpload.content());
 
                                                                     // 将临时文件对象存入 Map
                                                                     formData.put(fileUpload.getName(), tempFile);
@@ -126,8 +128,13 @@ public class NettyWithController {
                                             // 若没有注册的单例 或者注册的单例中没有@Handler修饰的方法 通过反射调用 Handler 方法
                                             controllerInstance = method.getDeclaringClass().getDeclaredConstructor().newInstance();
                                         }
-                                        String responseContent = (String) method.invoke(controllerInstance, new Context(request, parameters, json, formData)).toString();
-
+                                        Parameter[] parameterList = method.getParameters();
+                                        String responseContent = null;
+                                        if (parameterList.length > 0) {
+                                            responseContent = (String) method.invoke(controllerInstance, new Context(request, parameters, json, formData)).toString();
+                                        } else {
+                                            responseContent = (String) method.invoke(controllerInstance).toString();
+                                        }
                                         if (responseContent == null) {
                                             responseContent = "null";
                                         }
@@ -135,8 +142,8 @@ public class NettyWithController {
                                         // 构建 HTTP 响应
                                         FullHttpResponse response = new DefaultFullHttpResponse(
                                                 HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-                                        response.content().writeBytes(responseContent.getBytes());
-                                        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
+                                        response.content().writeBytes(responseContent.getBytes(StandardCharsets.UTF_8));
+                                        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
                                         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
                                         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
                                     } else {
