@@ -281,11 +281,11 @@ public class CatController {
 
 - 使用此实例可以实现与Mybatis对接的一些列功能，方法列表如下
 
-| 方法                                                      | 说明                                               | 示例                                         |
-| --------------------------------------------------------- | -------------------------------------------------- | -------------------------------------------- |
-| void close(Closeable any)                                 | 关闭实现/继承Closeable接口的类对象                 | mybatis.close(session)                       |
-| SqlSessionFactory getSqlSessionFactory()                  | 获得SqlSession工厂                                 | mybatis.getSqlSessionFactory()               |
-| SqlSession getSession()                                   | 获得一个新的SqlSession                             | mybatis.getSession()                         |
-| <T> T getMapper(Class<T> mapperClass)                     | 获得一个指定的Mapper实现（使用公共临时SqlSession） | mybatis.getMapper(UserMapper.class);         |
-| <T> T getMapper(SqlSession session, Class<T> mapperClass) | 获得一个指定的Mapper实现（使用指定SqlSession）     | mybatis.getMapper(session, CatMapper.class); |
+| 方法                                                      | 说明                                               | 示例                                        |
+| --------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------- |
+| void close(Closeable any)                                 | 关闭实现/继承Closeable接口的类对象                 | mybatis.close(session)                      |
+| SqlSessionFactory getSqlSessionFactory()                  | 获得SqlSession工厂                                 | mybatis.getSqlSessionFactory()              |
+| SqlSession getSession()                                   | 获得一个新的SqlSession                             | mybatis.getSession()                        |
+| <T> T getMapper(Class<T> mapperClass)                     | 获得一个指定的Mapper实现（使用公共临时SqlSession） | mybatis.getMapper(UserMapper.class)         |
+| <T> T getMapper(SqlSession session, Class<T> mapperClass) | 获得一个指定的Mapper实现（使用指定SqlSession）     | mybatis.getMapper(session, CatMapper.class) |
 
