@@ -162,6 +162,7 @@ public class CorsConfig {
 - @Instance常用的用法并非上述例子中当构造方法调用器用
 - 实际上@Instance的作用是将其注解的类的一个实例自动注册到实例池里，还可以使用name参数指定注册名（默认是类路径）
 - 样例：https://github.com/tyza66/JustSimpleDemo
+- 插件：https://github.com/Mutantcat-Working-Group/JustSimple/tree/main/docs
 
 
 
