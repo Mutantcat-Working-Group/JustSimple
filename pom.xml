@@ -7,7 +7,7 @@
     <!-- 父项目的基本信息 -->
     <groupId>org.mutantcat.justsimple</groupId>
     <artifactId>JustSimple</artifactId>
-    <version>1.0.20250407</version>
+    <version>1.0.20250408</version>
     <packaging>pom</packaging>
 
     <name>Just Simple</name>
@@ -42,7 +42,7 @@
     </modules>
 
     <properties>
-        <justsimple.version>1.0.20250407</justsimple.version>
+        <justsimple.version>1.0.20250408</justsimple.version>
         <netty.version>4.1.118.Final</netty.version>
         <snake-yaml.version>2.0</snake-yaml.version>
         <mybatis.version>3.5.7</mybatis.version>

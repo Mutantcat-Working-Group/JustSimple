@@ -7,12 +7,12 @@
     <parent>
         <artifactId>JustSimple</artifactId>
         <groupId>org.mutantcat.justsimple</groupId>
-        <version>1.0.20250324</version>
+        <version>1.0.20250408</version>
     </parent>
 
     <groupId>org.mutantcat.justsimple</groupId>
     <artifactId>justsimple-core</artifactId>
-    <version>1.0.20250407</version>
+    <version>1.0.20250408</version>
     <packaging>jar</packaging>
     <url>https://www.mutantcat.org/</url>
     <description>仅见JavaApi快速开发框架-核心</description>
