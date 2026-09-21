@@ -13,32 +13,32 @@ import java.io.InputStream;
 @Instance(name = "mybatis")
 public class Mybatis {
 
-    private static SqlSessionFactory sqlSessionFactory;
+    private SqlSessionFactory sqlSessionFactory;
 
-    private static SqlSession sessionInstance;
+    private volatile SqlSession sessionInstance;
 
     public Mybatis() {
-        try {
-            String resource = "mybatis-config.xml";
-            // 判断资源是否存在
-            if (getClass().getClassLoader().getResource(resource) != null) {
-                InputStream inputStream = Resources.getResourceAsStream(resource);
+        String resource = "mybatis-config.xml";
+        // 判断资源是否存在
+        if (getClass().getClassLoader().getResource(resource) != null) {
+            try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
                 sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-            } else {
-                System.out.println("若想使用Mybatis作为ORM框架需要定义mybatis-config.xml");
+            } catch (Exception e) {
+                System.err.println("加载 mybatis-config.xml 失败: " + e.getMessage());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            System.out.println("若想使用Mybatis作为ORM框架需要定义mybatis-config.xml");
         }
     }
 
     public void close(Closeable any) {
+        if (any == null) {
+            return;
+        }
         try {
-            if (any != null) {
-                any.close();
-            }
+            any.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("关闭失败: " + e.getMessage());
         }
     }
 
@@ -47,32 +47,40 @@ public class Mybatis {
     }
 
     public SqlSession getSession() {
+        if (sqlSessionFactory == null) {
+            throw new IllegalStateException("SqlSessionFactory 未初始化,请先配置 mybatis-config.xml");
+        }
         return sqlSessionFactory.openSession();
     }
 
     public <T> T getMapper(Class<T> mapperClass) {
-        try {
-            if (sessionInstance == null) {
-                sessionInstance = sqlSessionFactory.openSession();
-            }
-            Configuration configuration = sqlSessionFactory.getConfiguration();
-            // 如果没有注册 ClassMapper，则注册它
-            if (!configuration.hasMapper(mapperClass)) {
-                configuration.addMapper(mapperClass);
-            }
-            return sessionInstance.getMapper(mapperClass);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        SqlSession session = getOrCreateSharedSession();
+        return getMapper(session, mapperClass);
     }
 
     public <T> T getMapper(SqlSession session, Class<T> mapperClass) {
+        if (sqlSessionFactory == null) {
+            throw new IllegalStateException("SqlSessionFactory 未初始化,请先配置 mybatis-config.xml");
+        }
         Configuration configuration = sqlSessionFactory.getConfiguration();
-        // 如果没有注册 ClassMapper，则注册它
+        // 如果没有注册 ClassMapper,则注册它
         if (!configuration.hasMapper(mapperClass)) {
             configuration.addMapper(mapperClass);
         }
         return session.getMapper(mapperClass);
+    }
+
+    private SqlSession getOrCreateSharedSession() {
+        SqlSession session = sessionInstance;
+        if (session == null) {
+            synchronized (this) {
+                session = sessionInstance;
+                if (session == null) {
+                    session = sqlSessionFactory.openSession();
+                    sessionInstance = session;
+                }
+            }
+        }
+        return session;
     }
 }

@@ -7,7 +7,11 @@ public class InstanceHandler {
     // 用于存储实例的哈希表
     private static final ConcurrentHashMap<String, Object> INSTANCES = new ConcurrentHashMap<>();
 
+    private InstanceHandler() {
+    }
+
     // 获取实例
+    @SuppressWarnings("unchecked")
     public static <T> T getInstance(String name) {
         return (T) INSTANCES.get(name);
     }
@@ -17,4 +21,13 @@ public class InstanceHandler {
         INSTANCES.put(name, instance);
     }
 
+    // 是否存在实例
+    public static boolean contains(String name) {
+        return INSTANCES.containsKey(name);
+    }
+
+    // 移除实例
+    public static void removeInstance(String name) {
+        INSTANCES.remove(name);
+    }
 }

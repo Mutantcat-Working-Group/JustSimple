@@ -9,14 +9,18 @@ import java.nio.channels.FileChannel;
 
 public class FileUploadHandler {
 
+    private FileUploadHandler() {
+    }
+
     public static class TempFile {
-        private FileUpload fileUpload;
-        private ByteBuf byteBuf;
-        private String fileName;
+        private final FileUpload fileUpload;
+        private final ByteBuf byteBuf;
+        private final String fileName;
 
         public TempFile(FileUpload fileUpload, ByteBuf byteBuf) {
             this.fileUpload = fileUpload;
-            this.byteBuf = byteBuf.copy();
+            // 直接持有引用,由调用方负责释放;copy 会双倍占用堆外内存
+            this.byteBuf = byteBuf;
             this.fileName = fileUpload.getFilename();
         }
 
@@ -33,25 +37,24 @@ public class FileUploadHandler {
         }
     }
 
-    public static TempFile saveToTemporaryFile(FileUpload fileUpload,ByteBuf byteBuf) {
+    public static TempFile saveToTemporaryFile(FileUpload fileUpload, ByteBuf byteBuf) {
         return new TempFile(fileUpload, byteBuf);
     }
 
     public static void saveByteBufToFile(ByteBuf byteBuf, String filePath) {
+        if (byteBuf == null || filePath == null) {
+            return;
+        }
         try (FileOutputStream fos = new FileOutputStream(filePath);
              FileChannel fileChannel = fos.getChannel()) {
-
             // 将 ByteBuf 数据写入文件
             byteBuf.readBytes(fileChannel, byteBuf.readableBytes());
-
             System.out.println("File saved successfully to: " + filePath);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Failed to save the binary data to file.");
+            System.err.println("Failed to save the binary data to file " + filePath + ": " + e.getMessage());
         } finally {
             // 确保释放 ByteBuf
             byteBuf.release();
         }
     }
 }
-

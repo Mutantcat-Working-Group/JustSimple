@@ -1,30 +1,37 @@
 package org.mutantcat.justsimple.config;
 
 import io.netty.handler.codec.http.cors.CorsConfig;
-import org.mutantcat.justsimple.annotation.Instance;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 //@Instance(name = "just_simple_config")
 public class Config {
-    Map<String, Object> config;
-    CorsConfig corsConfig;
+    private static final int DEFAULT_PORT = 7891;
+    private static final String CONFIG_FILE = "application.yaml";
+
+    private final Map<String, Object> config;
+    private CorsConfig corsConfig;
 
     public Config() {
-        Yaml yaml = new Yaml();
-        try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("application.yaml");
-            Map<String, Object> data = yaml.load(inputStream);
-            this.config = data;
-        } catch (Exception e) {
-            e.printStackTrace();
+        Map<String, Object> loaded = new HashMap<>();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(CONFIG_FILE);
+        if (inputStream != null) {
+            try (InputStream in = inputStream) {
+                Object data = new Yaml().load(in);
+                if (data instanceof Map) {
+                    loaded.putAll((Map<String, Object>) data);
+                }
+            } catch (Exception e) {
+                System.err.println("加载 " + CONFIG_FILE + " 失败,将使用默认配置: " + e.getMessage());
+            }
         }
-        if (config.get("port") == null) {
-            config.put("port", 7891);
+        if (loaded.get("port") == null) {
+            loaded.put("port", DEFAULT_PORT);
         }
-        corsConfig = null;
+        this.config = loaded;
     }
 
     public Map<String, Object> getConfig() {
@@ -42,6 +49,4 @@ public class Config {
     public void setCorsConfig(CorsConfig corsConfig) {
         this.corsConfig = corsConfig;
     }
-
-
 }
