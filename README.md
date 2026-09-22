@@ -5,24 +5,40 @@
 
 ### 一、产品概述
 
-- 非常非常简单的Java Web Api开发库，一分钟上手开发Api接口
-- 适合其他语言转码直接上手使用，大程度简化各种操作
-- 可以作为本地测试、简单接口、快速原型、极限编程、临时模型等
-- 生态仍在持续扩充中，感谢各国产框架提供的兼容与支持
+- 非常非常简单的 Java Web Api 开发库，一分钟上手开发 Api 接口。
+- 适合其他语言转码直接上手使用，大程度简化各种操作。
+- 可作为本地测试、简单接口、快速原型、极限编程、临时模型等场景的底座。
+- 基于 Netty，注解驱动，无繁重配置，生态仍在持续扩充。
 
-### 二、引入依赖
+核心价值：一个注解启动、一个上下文对象收参数，写接口只剩业务代码。
+
+### 二、功能说明
+
+- 注解驱动：`@JustSimple` 启动，`@Controller` + `@Handler` 定义路由，`@Instance` 自动注册实例。
+- 上下文对象：`Context` 一次性拿到 GET 参数、POST JSON、表单数据与原始 `FullHttpRequest`。
+- 实例池：通过 `InstanceHandler` 存取单例，Controller 可随时取用。
+- 双配置方式：启动前代码配置或 `@Instance` 自动注册，也可走 `application.yaml` 配置文件。
+- CORS 内置：开箱可配的跨域规则，支持任意来源、方法、请求头与预检缓存。
+
+### 三、安装与下载
+
+Maven 引入（当前版本 `1.0.20260920`）：
 
 ```xml
 <dependencies>
     <dependency>
         <groupId>org.mutantcat.justsimple</groupId>
         <artifactId>justsimple-core</artifactId>
-        <version>1.0.20250728</version>
+        <version>1.0.20260920</version>
     </dependency>
 </dependencies>
 ```
 
-### 三、启动类
+也可从 [Releases](https://github.com/Mutantcat-Working-Group/JustSimple/releases) 下载源码包（最新 `v1.0.20260921`），另附 `checksums.txt` 供校验。版本号使用纯日期递增，推送同族标签（`v` 前缀可选）后，GitHub Actions 会自动打包并发布 Release。
+
+### 四、快速上手
+
+#### 启动类
 
 ```java
 import org.mutantcat.justsimple.Application;
@@ -37,7 +53,7 @@ public class Main {
 }
 ```
 
-### 四、控制器定义
+#### 控制器定义
 
 ```java
 import org.mutantcat.justsimple.annotation.Controller;
@@ -59,10 +75,9 @@ public class MyController {
         return "Hello, JustSimple!";
     }
 }
-
 ```
 
-### 五、实例定义
+#### 实例定义与存取
 
 ```java
 import org.mutantcat.justsimple.annotation.Instance;
@@ -75,14 +90,14 @@ public class MyInstance {
 }
 ```
 
-### 六、实例存取
-
 ```java
 InstanceHandler.putInstance("MyInstance", this);
 InstanceHandler.getInstance("MyInstance");
 ```
 
-### 七、直接添加配置
+### 五、开发者集成
+
+#### 直接添加配置
 
 ```java
 import io.netty.handler.codec.http.HttpMethod;
@@ -116,10 +131,9 @@ public class ConfigHandler {
         return updatedArgs;
     }
 }
-
 ```
 
-### 八、通过实例添加配置
+#### 通过实例添加配置
 
 ```java
 import io.netty.handler.codec.http.HttpMethod;
@@ -143,26 +157,24 @@ public class CorsConfig {
 }
 ```
 
-### 九、配置列表
+#### 配置列表
 
-| 配置名称              | 实例类型                                    | 配置说明     |
-| --------------------- | ------------------------------------------- | ------------ |
-| corsConfig:配置实例名 | io.netty.handler.codec.http.cors.CorsConfig | 跨域规则配置 |
-| port:配置实例名       | java.lang.Integer                           | 程序运行端口 |
+| 配置名称 | 实例类型 | 配置说明 |
+| --- | --- | --- |
+| `corsConfig:配置实例名` | io.netty.handler.codec.http.cors.CorsConfig | 跨域规则配置 |
+| `port:配置实例名` | java.lang.Integer | 程序运行端口 |
 
-### 十、其他说明
+#### 其他说明
 
-- resourse下的application.yaml就是配置文件
-- Controller必须放到controller包下（强制规范）
-- 配置格式是corsConfig:CorsConfigInstanceName、port:portConfigName
-- 只需将配置传入args中即可，注意配置的时候:前第一个是固定的配置名，:后第二个是注册的实例名
-- 注意是英文冒号，普通的配置的Object类型要与列表中对应
-- 代码配置优先级大于配置文件配置，自动注册的Instance优先级大于启动语句前配置的
-- 若想使用单例Controller，直接添加@Instance和@Controller两个注解即可
-- @Instance常用的用法并非上述例子中当构造方法调用器用
-- 实际上@Instance的作用是将其注解的类的一个实例自动注册到实例池里，还可以使用name参数指定注册名（默认是类路径）
+- `resource` 下的 `application.yaml` 就是配置文件。
+- Controller 必须放到 `controller` 包下（强制规范）。
+- 配置格式为 `corsConfig:CorsConfigInstanceName`、`port:portConfigName`，只需将配置传入 `args`；`:` 前是固定配置名，`:` 后是注册的实例名，英文冒号。
+- 代码配置优先级大于配置文件配置，自动注册的 Instance 优先级大于启动语句前配置的。
+- 想用单例 Controller，同时添加 `@Instance` 和 `@Controller` 两个注解即可。
+- `@Instance` 的常用用法不是当构造方法调用器，而是把注解类的实例自动注册到实例池，可用 `name` 参数指定注册名（默认类路径）。
 - 样例：https://github.com/tyza66/JustSimpleDemo
 - 插件：https://github.com/Mutantcat-Working-Group/JustSimple/tree/main/docs
 
+### 六、开源协议
 
-
+本项目基于 Apache-2.0 协议开源。
