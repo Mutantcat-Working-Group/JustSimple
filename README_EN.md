@@ -114,3 +114,7 @@ Built from scratch, with more flexible interface specifications and an open ecos
 <a href="https://jb.gg/OpenSourceSupport">
   <img src="https://user-images.githubusercontent.com/8643542/160519107-199319dc-e1cf-4079-94b7-01b6b8d23aa6.png" align="left" height="100" width="100"  alt="JetBrains">
 </a>
+
+## Thanks to Solon
+
+JustSimple's later-stage code is forked from [Solon](https://solon.noear.org). We extend our gratitude to the Solon project and its authors.

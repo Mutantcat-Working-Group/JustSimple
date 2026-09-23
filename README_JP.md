@@ -110,3 +110,7 @@ JustSimple
 <a href="https://jb.gg/OpenSourceSupport">
   <img src="https://user-images.githubusercontent.com/8643542/160519107-199319dc-e1cf-4079-94b7-01b6b8d23aa6.png" align="left" height="100" width="100"  alt="JetBrains">
 </a>
+
+## Solon に感謝します
+
+JustSimple の後期のコードは [Solon](https://solon.noear.org) をフォークしたものです。Solon プロジェクトとその作者たちに感謝いたします。
