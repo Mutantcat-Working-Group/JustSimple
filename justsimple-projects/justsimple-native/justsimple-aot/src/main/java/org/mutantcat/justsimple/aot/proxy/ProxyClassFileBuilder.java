@@ -1,0 +1,289 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.aot.proxy;
+
+import com.squareup.javapoet.*;
+import org.noear.eggg.ClassEggg;
+import org.noear.eggg.MethodEggg;
+import org.noear.eggg.ParamEggg;
+import org.mutantcat.justsimple.core.util.EgggUtil;
+
+import javax.lang.model.element.Modifier;
+import java.lang.reflect.*;
+import java.util.Collection;
+
+/**
+ * 类文件构建器
+ *
+ * @author noear
+ * @since 2.2
+ */
+public class ProxyClassFileBuilder {
+    public static final String PROXY_CLASSNAME_SUFFIX ="$$JustSimpleAotProxy";
+
+    public JavaFile build(Class<?> typeElement) {
+        //::1.准备
+        //获取包路径
+        Package packageElement = typeElement.getPackage();
+        String packageName = packageElement.getName();
+
+        //获取类名（支持成员类）
+        String className = typeElement.getSimpleName();
+
+        ClassName supperClassName = ClassName.get(packageName, className);
+        String proxyClassName = className + PROXY_CLASSNAME_SUFFIX;
+
+        //::2.开始
+        //生成的类
+        TypeSpec.Builder proxyTypeBuilder = TypeSpec
+                .classBuilder(proxyClassName)
+                .superclass(supperClassName)
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+
+
+        //添加构造函数
+        addConstructor(proxyTypeBuilder, typeElement, proxyClassName);
+
+
+        //获取所有函数
+        ClassEggg classEggg = EgggUtil.getClassEggg(typeElement);
+        Collection<MethodEggg> methodAll = MethodFinder.findMethodAll(classEggg);
+
+        if(methodAll.size() > 0) {
+            //添加代理函数
+            addMethodAll(proxyTypeBuilder, methodAll);
+            //添加静态代码块
+            addStaticBlock(proxyTypeBuilder, packageName, className, methodAll);
+        }
+
+
+        //创建javaFile文件对象
+        TypeSpec proxyType = proxyTypeBuilder.build();
+        return JavaFile.builder(packageName, proxyType).build();
+    }
+
+    /**
+     * 添加构造函数
+     */
+    private void addConstructor(TypeSpec.Builder proxyTypeBuilder, Class<?> typeElement, String proxyClassName) {
+        //添加字段
+        proxyTypeBuilder.addField(InvocationHandler.class, "handler", Modifier.PRIVATE);
+
+        //添加构造函数
+        MethodSpec.Builder methodBuilder = MethodSpec
+                .constructorBuilder()
+                .addModifiers(Modifier.PUBLIC);
+
+
+        methodBuilder.addParameter(InvocationHandler.class, "handler");
+        methodBuilder.addParameter(Object[].class, "args");
+        Constructor constructor = typeElement.getDeclaredConstructors()[0];
+        if (constructor.getParameterCount() > 0) {
+            //支持"有参"构造函数
+            Class<?>[] parameterTypes = constructor.getParameterTypes();
+            StringBuilder buf = new StringBuilder("super(");
+            for (int i = 0; i < parameterTypes.length; i++) {
+                Class<?> t1 = parameterTypes[i];
+                buf.append("(").append(t1.getName()).append(")args[").append(i).append("],");
+            }
+            buf.setLength(buf.length() - 1);
+            buf.append(")");
+
+            methodBuilder.addStatement(buf.toString());
+        }
+
+        methodBuilder.addStatement("this.handler = handler");
+
+        proxyTypeBuilder.addMethod(methodBuilder.build());
+    }
+
+
+    /**
+     * 添加静态代码块
+     */
+    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String packageName, String className, Collection<MethodEggg> methodAll) {
+        int methodIndex = 0;
+
+        StringBuilder codeBuilder = new StringBuilder(150);
+
+        codeBuilder.append("try {\n");
+        codeBuilder.append("  Class<?> clazz = $T.class;\n\n");
+
+        for (MethodEggg methodElement : methodAll) {
+            //添加函数
+            if (MethodFinder.allowMethod(methodElement) == false) {
+                //静态 或 只读 或 私有；不需要重写
+                continue;
+            }
+            String methodFieldName = "  method" + methodIndex;
+
+            codeBuilder.append(methodFieldName)
+                    .append("=clazz.getMethod(\"")
+                    .append(methodElement.getName())
+                    .append("\"");
+
+            for (Parameter p0 : methodElement.getParameters()) {
+                if (p0.getParameterizedType() != null) {
+                    Type p1 = p0.getType();
+                    String p1Name = p1.getTypeName();
+                    int p1NameIdx = p1Name.indexOf("<");
+                    if (p1NameIdx > 0) {
+                        p1Name = p1Name.substring(0, p1NameIdx);
+                    }
+
+                    if (p1 instanceof TypeVariable) {
+                        codeBuilder.append(",Object.class");
+                    } else {
+                        codeBuilder.append(",")
+                                .append(p1Name)
+                                .append(".class");
+                    }
+                } else {
+                    Type p1 = p0.getType();
+                    String p1Name = p1.toString();
+                    int p1NameIdx = p1Name.indexOf("<");
+                    if (p1NameIdx > 0) {
+                        p1Name = p1Name.substring(0, p1NameIdx);
+                    }
+
+                    codeBuilder.append(",")
+                            .append(p1Name)
+                            .append(".class");
+                }
+            }
+
+            codeBuilder.append(");\n");
+
+            ++methodIndex;
+        }
+
+        codeBuilder.append("} catch (Throwable e) {\n" +
+                "  throw new IllegalStateException(e);\n" +
+                "}\n");
+
+
+        CodeBlock codeBlock = CodeBlock.of(codeBuilder.toString(), ClassName.get(packageName, className));
+
+        proxyTypeBuilder.addStaticBlock(codeBlock);
+    }
+
+
+    /**
+     * 添加所有函数
+     */
+    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder, Collection<MethodEggg> methodAll) {
+        int methodIndex = 0;
+
+        for (MethodEggg e : methodAll) {
+            //添加函数
+            methodIndex = addMethod(proxyTypeBuilder, e, methodIndex);
+        }
+    }
+
+    /**
+     * 添加具本函数
+     */
+    private int addMethod(TypeSpec.Builder proxyTypeBuilder, MethodEggg methodElement, int methodIndex) {
+        if (MethodFinder.allowMethod(methodElement) == false) {
+            //静态 或 只读 或 私有；不需要重写
+            return methodIndex;
+        }
+
+        String methodFieldName = "method" + methodIndex;
+
+        proxyTypeBuilder.addField(Method.class, methodFieldName, Modifier.PRIVATE, Modifier.STATIC);
+
+        //Type returnType = TypeNameUtil.getType(typeGenericMap, methodElement.getReturnType(), methodElement.getGenericReturnType());
+        TypeName returnTypeName = TypeNameUtil.getTypeName(methodElement, methodElement.getReturnTypeEggg());
+
+        StringBuilder codeBuilder = new StringBuilder(150);
+
+        boolean isPublic = methodElement.isPublic();
+
+        //生成方法
+        MethodSpec.Builder methodBuilder = MethodSpec
+                .methodBuilder(methodElement.getName().toString())
+                .addModifiers(isPublic ? Modifier.PUBLIC : Modifier.PROTECTED)
+                .addAnnotation(Override.class)
+                .returns(returnTypeName);
+
+        //添加可抛类型
+        for (Class<?> tt : methodElement.getMethod().getExceptionTypes()) {
+            methodBuilder.addException(TypeName.get(tt));
+        }
+
+        //添加函数泛型
+        for (TypeVariable te : methodElement.getMethod().getTypeParameters()) {
+            TypeVariableName teName = TypeNameUtil.getTypeVariableName(methodElement, te);
+            methodBuilder.addTypeVariable(teName);
+        }
+
+        //构建代码块和参数
+        codeBuilder.append("handler.invoke(this, ")
+                .append(methodFieldName).append(", ")
+                .append("new Object[]{");
+
+        //添加函数参数
+        for (ParamEggg pe : methodElement.getParamEgggAry()) {
+            TypeName paramType = TypeNameUtil.getTypeName(methodElement, pe.getTypeEggg());
+
+            String paramName = pe.getName();
+
+            methodBuilder.addParameter(paramType, paramName);
+            codeBuilder.append(paramName).append(",");
+        }
+
+        if (codeBuilder.charAt(codeBuilder.length() - 1) == ',') {
+            codeBuilder.setLength(codeBuilder.length() - 1);
+        }
+        codeBuilder.append("});");
+
+        //添加函数代码
+        if (Void.TYPE.equals(methodElement.getReturnType())) {
+            codeBuilder.insert(0, "try { \n  ");
+            codeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
+                    "  throw _ex;\n" +
+                    "} catch (Throwable _ex) {\n" +
+                    "  throw new RuntimeException(_ex);\n" +
+                    "}\n");
+
+            methodBuilder.addCode(codeBuilder.toString());
+        } else {
+            codeBuilder.insert(0, "try { \n  return (" + returnTypeName + ")");
+            codeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
+                    "  throw _ex;\n" +
+                    "} catch (Throwable _ex) {\n" +
+                    "  throw new RuntimeException(_ex);\n" +
+                    "}\n");
+
+            methodBuilder.addCode(codeBuilder.toString());
+        }
+
+        proxyTypeBuilder.addMethod(methodBuilder.build());
+
+        return ++methodIndex;
+    }
+
+    /**
+     * 根据类型和包名获取类名
+     *
+     * @param type        类型
+     * @param packageName 包名
+     */
+    public static String getClassName(Class<?> type, String packageName) {
+        return type.getSimpleName().replace('.', '$');
+    }
+}

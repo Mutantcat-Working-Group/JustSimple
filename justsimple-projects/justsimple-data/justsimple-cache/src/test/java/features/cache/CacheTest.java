@@ -1,0 +1,70 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package features.cache;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mutantcat.justsimple.JustSimple;
+import org.mutantcat.justsimple.data.cache.CacheService;
+import org.mutantcat.justsimple.data.cache.LocalCacheService;
+
+/**
+ * @author noear 2022/2/21 created
+ */
+public class CacheTest {
+    @Test
+    public void case1() {
+        CacheService cacheService = new LocalCacheService();
+
+        cacheService.store("1", "world", 100);
+
+        assert "world".equals(cacheService.get("1", String.class));
+
+        cacheService.remove("1");
+
+        assert cacheService.get("1", String.class) == null;
+    }
+
+    @Test
+    public void case2() throws Exception {
+        try {
+            JustSimple.start(DemoService.class, new String[0], app -> {
+                app.enableCaching(true);
+            });
+
+
+            DemoService demoService = JustSimple.context().getBean(DemoService.class);
+
+            String rst1 = demoService.getName("1");
+            System.out.println(rst1);
+
+            String rst2 = demoService.getName("1");
+            System.out.println(rst2);
+
+            Assertions.assertEquals(rst1, rst2);
+
+            Thread.sleep(2000);
+
+            String rst3 = demoService.getName("1");
+            System.out.println(rst3);
+
+            Assertions.assertNotEquals(rst1, rst3);
+
+        } finally {
+            JustSimple.stopBlock();
+        }
+    }
+}

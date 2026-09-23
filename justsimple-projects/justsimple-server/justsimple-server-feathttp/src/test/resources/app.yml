@@ -1,0 +1,10 @@
+justsimple:
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  request:
+    maxBodySize: 48kb
+    maxFileSize: 2mb
+    maxPartCount: 4

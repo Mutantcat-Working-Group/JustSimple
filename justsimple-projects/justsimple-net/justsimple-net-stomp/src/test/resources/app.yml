@@ -1,0 +1,9 @@
+justsimple:
+  env: dev
+justsimple.app:
+  name: 'justsimple-demo'
+
+justsimple.logging:
+  logger:
+    root: #默认记录器配置
+      level: INFO

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mutantcat.justsimple</groupId>
+        <artifactId>justsimple-parent</artifactId>
+        <version>4.1.1-SNAPSHOT</version>
+        <relativePath>../../justsimple-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>justsimple-lib</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- 内核 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-java25</artifactId>
+        </dependency>
+
+        <!-- 提供 Handler 处理支持插件（job,web,message） -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-handle</artifactId>
+        </dependency>
+
+        <!-- 提供事务、数据源构建支持插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-data</artifactId>
+        </dependency>
+
+        <!-- 提供缓存支持插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-cache</artifactId>
+        </dependency>
+
+        <!-- 加强的动态代理支持插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-proxy</artifactId>
+        </dependency>
+
+        <!-- yml配置解析支持插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-config-yaml</artifactId>
+        </dependency>
+
+        <!-- 配置注入增强插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-config-snack4</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,4 @@
+justsimple:
+  threads:
+    virtual:
+      enabled: true

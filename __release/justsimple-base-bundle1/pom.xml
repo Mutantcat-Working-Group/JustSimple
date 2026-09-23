@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mutantcat.justsimple</groupId>
+        <artifactId>justsimple-parent</artifactId>
+        <version>4.1.1-SNAPSHOT</version>
+        <relativePath>../../justsimple-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>justsimple-base-bundle1</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../justsimple-projects/justsimple-native/justsimple-aot</module>
+
+        <module>../../justsimple-projects/justsimple-base/justsimple-handle</module>
+        <module>../../justsimple-projects/justsimple-base/justsimple-proxy</module>
+        <module>../../justsimple-projects/justsimple-base/justsimple-i18n</module>
+        <module>../../justsimple-projects/justsimple-base/justsimple-mvc</module>
+        <module>../../justsimple-projects/justsimple-base/justsimple-hotplug</module>
+        <module>../../justsimple-projects/justsimple-base/justsimple-statemachine</module>
+
+        <module>../../justsimple-projects/justsimple-rx/justsimple-rx</module>
+        <module>../../justsimple-projects/justsimple-rx/justsimple-web-rx</module>
+        <module>../../justsimple-projects/justsimple-rx/justsimple-data-rx-sqlutils</module>
+
+        <module>../../justsimple-projects/justsimple-config/justsimple-config-banner</module>
+        <module>../../justsimple-projects/justsimple-config/justsimple-config-yaml</module>
+        <module>../../justsimple-projects/justsimple-config/justsimple-config-plus</module>
+        <module>../../justsimple-projects/justsimple-config/justsimple-config-snack3</module>
+        <module>../../justsimple-projects/justsimple-config/justsimple-config-snack4</module>
+
+        <module>../../justsimple-projects/justsimple-security/justsimple-security-auth</module>
+        <module>../../justsimple-projects/justsimple-security/justsimple-security-sm</module>
+        <module>../../justsimple-projects/justsimple-security/justsimple-security-vault</module>
+        <module>../../justsimple-projects/justsimple-security/justsimple-security-validation</module>
+        <module>../../justsimple-projects/justsimple-security/justsimple-security-web</module>
+    </modules>
+</project>

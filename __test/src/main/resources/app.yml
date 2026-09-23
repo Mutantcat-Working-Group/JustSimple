@@ -1,0 +1,241 @@
+each:
+  a: ${each.b}_a
+  b: ${each.c}_b
+  c: ${each.d}_c
+  d: ${each.e}_d
+  e: ${GLOBAL_EACH}_e
+GLOBAL_EACH: "each_test"
+
+demo6:
+  test:
+    aaa: 121212
+    bbb: 12
+    ccc: "${.bbb}"
+
+demo8.test:
+  url: jdbc:mysql://127.0.0.1/user
+  username: root
+  paasword: 12
+
+demo9:
+  1:
+    a: "a"
+  2:
+    b: "b"
+
+demo10:
+  - a: 1
+    b: 3
+  - a: 3
+    b: 2
+  - a: 2
+    b: 1
+
+autorefresh:
+  username: a
+
+cache1:
+  driverType: local
+
+username: noear
+paasword: 1234
+
+testname: xxx
+testpath: "D:/abc-1-2.12/xx.xml"
+
+server.port: 8081
+
+server.contextPath: "/test/"
+
+server.http.gzip:
+  enable: true
+  minSize: 4096
+  mimeTypes: 'text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml'
+
+justsimple.env: test
+
+justsimple.app:
+  name: testapp
+  group: test
+  licence: "faPfGlSmhHiRFbCDMuYHjU6ntu6nfwji+td/NCiTFjSLDgC7OTS34AHam+2xXkA5T07MTb1aGDKzx5pNoVRoVg=="
+
+justsimple.drift: 1
+
+justsimple.extend: "!app_ext"
+
+justsimple.config.load:
+  - "classpath:jdbc-${justsimple.env}.yml"
+  - "classpath:cfg-load1.yml"
+  - "classpath:cfg-load2.yml"
+
+justsimple.locale: "en_US"
+
+justsimple.threads.virtual.enabled: true
+
+justsimple.cloud.local:
+  server: "classpath:META-INF/justsimple-cloud/"
+  breaker:
+    root: 1
+  discovery:
+    service:
+      local:
+        - "http://localhost:8080"
+      demo:
+        - "http://localhost:8080"
+      localrpc:
+        - "tcp://localhost:28080"
+
+
+justsimple.health.detector: "cpu,disk,jvm,memory,os,qps"
+
+justsimple.mime:
+  mov: "video/quicktime"
+
+justsimple.logging.appender:
+  console:
+    enable: true
+    pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level %magenta(${PID:-}) %white(---) %-20(%yellow([%20.20thread])) %-55(%cyan(%.32logger{30}:%L)) %msg%n"
+    level: ERROR
+  file:
+    enable: false
+#  test:
+#    class: webapp.demox_log_breaker.TestAppender
+#    level: TRACE
+
+justsimple.logging.logger:
+  "org.apache":
+    level: INFO
+  "org.eclipse":
+    level: INFO
+  "org.thymeleaf":
+    level: INFO
+  "org.java_websocket":
+    level: WARN
+
+justsimple.socketd:
+  readBufferSize: "512"
+  writeBufferSize: "128"
+  connectTimeout: "60s"
+  socketTimeout: "60s"
+
+
+formattest:
+  text: "${justsimple.socketd.readBufferSize}m/-/${justsimple.locale}"
+  text2: "${aaaa.bbb:}"
+  text3: "${aaaa.bbb:12}"
+  text10: ${JAVA_HOME}
+  text11: ${JAVA_HOME12:11}
+
+inject.set3: "1,2,3"
+inject.set4:
+  - 1
+  - 2
+  - 3
+
+server:
+  request:
+    maxBodySize: 2mb
+    maxFileSize: 2000mb
+    maxHeaderSize: 200kb
+    useTempfile: true
+    autoMultipart: false
+  session:
+    timeout: 7200 #单位秒；（可不配，默认：7200）
+    cookieName: "i8Vn"
+    state:
+      redis:
+        server: localhost:6379
+        password: 123456
+        db: 3
+        maxTotal: 200
+        minIdle: 3
+
+#特殊信息输出
+justsimple.output.meta: 1
+
+justsimple.stop:
+  enable: true
+  path: /demox/_stop
+  host: localhost
+
+justsimple.quartz.QuartzRun1:
+  cron7x: "0 0/1 * * * ? *"
+  enable: true
+
+justsimple.cron4j.Cron4jRun1:
+  cron5x: "*/1 * * * *"
+  enable: true
+
+custom:
+  li:
+    - 12
+    - 13
+
+app.dict:
+  name: 张三
+  age: 8
+  codes: { dev: "develop", test: "test" }
+  likes:
+    - 素描
+    - 摄影
+
+cfgitems:
+  - id: 1
+    name: id1
+  - id: 2
+    name: id2
+
+cfgmap:
+  cfg1:
+    id: 1
+    name: id1
+  cfg2:
+    id: 2
+    name: id2
+
+stritems:
+  - id1
+  - id2
+  - ida
+  - id_
+  - idb
+  - d0
+
+strmap:
+  id1: 1
+  id2: 2
+
+#justsimple.view.prefix: "file:/Users/noear/Downloads/templates/"
+
+justsimple.vault:
+  password: "liylU9PhDq63tk1C"
+
+vault.test.db1:
+  url: "..."
+  username: "ENC(xo1zJjGXUouQ/CZac55HZA==)"
+  password: "ENC(XgRqh3C00JmkjsPi4mPySA==)"
+
+# sa-token配置
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: satoken
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  allow-concurrent-login: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false
+
+---
+justsimple.env.on: test
+envtest.name: test
+---
+justsimple.env.on: dev
+envtest.title: dev
+

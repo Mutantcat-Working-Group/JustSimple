@@ -1,0 +1,294 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.core.util;
+
+import org.mutantcat.justsimple.lang.Nullable;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Properties;
+
+/**
+ * 断言类
+ *
+ * @author noear
+ * @since 3.1
+ */
+public final class Assert {
+
+    /**
+     * 检查字符串是否为空
+     *
+     * @param s 字符串
+     */
+    public static boolean isEmpty(String s) {
+        return s == null || s.length() == 0;
+    }
+
+    /**
+     * 检查集合是否为空
+     *
+     * @param s 集合
+     */
+    public static boolean isEmpty(Collection s) {
+        return s == null || s.size() == 0;
+    }
+
+    /**
+     * 检查映射是否为空
+     *
+     * @param s 集合
+     */
+    public static boolean isEmpty(Map s) {
+        return s == null || s.size() == 0;
+    }
+
+    /**
+     * 检查多值映射是否为空
+     *
+     * @param s 集合
+     */
+    public static boolean isEmpty(MultiMap s) {
+        return s == null || s.size() == 0;
+    }
+
+    /**
+     * 检查数组是否为空
+     *
+     * @param s 集合
+     */
+    public static <T> boolean isEmpty(T[] s) {
+        return s == null || s.length == 0;
+    }
+
+    /**
+     * 检查属性是否为空
+     *
+     * @param s 属性
+     */
+    public static <T> boolean isEmpty(Properties s) {
+        return s == null || s.size() == 0;
+    }
+
+
+    /**
+     * 检查字符串是否为非空
+     *
+     * @param s 字符串
+     */
+    public static boolean isNotEmpty(String s) {
+        return !isEmpty(s);
+    }
+
+    /**
+     * 检查集合是否非空
+     *
+     * @param s 集合
+     */
+    public static boolean isNotEmpty(Collection s) {
+        return !isEmpty(s);
+    }
+
+    /**
+     * 检查集合是否非空
+     *
+     * @param s 集合
+     */
+    public static <T> boolean isNotEmpty(T[] s) {
+        return !isEmpty(s);
+    }
+
+    /**
+     * 检查集合是否非空
+     *
+     * @param s 集合
+     */
+    public static boolean isNotEmpty(Map s) {
+        return !isEmpty(s);
+    }
+
+    /**
+     * 检查属性是否非空
+     *
+     * @param s 属性
+     */
+    public static boolean isNotEmpty(Properties s) {
+        return !isEmpty(s);
+    }
+
+
+    /**
+     * 检查字符串是否为空白
+     *
+     * @param s 字符串
+     */
+    public static boolean isBlank(String s) {
+        if (isEmpty(s)) {
+            return true;
+        } else {
+            for (int i = 0, l = s.length(); i < l; ++i) {
+                if (!isWhitespace(s.codePointAt(i))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    /**
+     * 检查字符串是否不为空白
+     *
+     * @param s 字符串
+     */
+    public static boolean isNotBlank(String s) {
+        return !isBlank(s);
+    }
+
+    /**
+     * 检查是否为空白字符
+     *
+     * @param c 字符
+     */
+    public static boolean isWhitespace(int c) {
+        return c == 32 || c == 9 || c == 10 || c == 12 || c == 13;
+    }
+
+    /// //////////////////////////////////////////////
+
+    /**
+     * 不能为空集合
+     */
+    public static void notEmpty(@Nullable Collection<?> collection, String message) {
+        if (isEmpty(collection)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * 不能为空集合
+     */
+    public static void notEmpty(@Nullable Map<?, ?> map, String message) {
+        if (isEmpty(map)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * 不能为空字符串
+     */
+    public static void notEmpty(@Nullable String text, String message) {
+        if (isEmpty(text)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * 不能为空白字符串
+     */
+    public static void notBlank(@Nullable String text, String message) {
+        if (isBlank(text)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * 不能为 null
+     */
+    public static void notNull(@Nullable Object object, String message) {
+        if (object == null) {
+            throw new NullPointerException(message);
+        }
+    }
+
+    /**
+     * 是否全是数字
+     */
+    public static boolean isDigits(String str) {
+        if (str != null && str.length() != 0) {
+            int l = str.length();
+
+            for (int i = 0; i < l; ++i) {
+                if (!Character.isDigit(str.codePointAt(i))) {
+                    return false;
+                }
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isBoolean(String str) {
+        if (isEmpty(str)) {
+            return false;
+        }
+
+        String strL = str.toLowerCase();
+        return strL.equals("true") || strL.equals("false");
+    }
+
+    /**
+     * 是否会整型
+     * */
+    public static boolean isInteger(String str){
+        return isNumberDo(str, false);
+    }
+
+    /**
+     * 是否为数字
+     * */
+    public static boolean isNumber(String str) {
+        return isNumberDo(str, true);
+    }
+
+    /**
+     * 是否为数值（可以是整数 或 小数 或 负数）
+     */
+    private static boolean isNumberDo(String str, boolean incDot) {
+        if (str != null && str.length() != 0) {
+            char[] chars = str.toCharArray();
+            int l = chars.length;
+
+            int start = chars[0] != '-' && chars[0] != '+' ? 0 : 1;
+            boolean hasDot = false;
+
+            for (int i = start; i < l; ++i) {
+                int ch = chars[i];
+
+                if(incDot) {
+                    if (ch == 46) {
+                        if (hasDot) {
+                            return false;
+                        } else {
+                            hasDot = true;
+                            continue;
+                        }
+                    }
+                }
+
+                if (!Character.isDigit(ch)) {
+                    return false;
+                }
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

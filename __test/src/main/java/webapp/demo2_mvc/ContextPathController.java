@@ -1,0 +1,49 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package webapp.demo2_mvc;
+
+import org.mutantcat.justsimple.annotation.Controller;
+import org.mutantcat.justsimple.annotation.Mapping;
+import org.mutantcat.justsimple.core.handle.Context;
+import org.mutantcat.justsimple.web.cors.annotation.CrossOrigin;
+
+/**
+ * @author noear 2022/11/24 created
+ */
+@Mapping("/demo2/contextpath")
+@CrossOrigin(origins = "*")
+@Controller
+public class ContextPathController {
+    @Mapping("site")
+    public void site(Context ctx) {
+        ctx.redirect("http://h5.noear.org");
+    }
+
+    @Mapping("furl")
+    public void furl(Context ctx) {
+        ctx.redirect("/demo2/mapping/a");
+    }
+
+    @Mapping("rurl")
+    public void rurl(Context ctx) {
+        ctx.redirect("url1");
+    }
+
+    @Mapping("url1")
+    public String url1(Context ctx) {
+        return ctx.path() + " :: " + ctx.pathNew();
+    }
+}

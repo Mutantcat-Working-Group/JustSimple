@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mutantcat.justsimple</groupId>
+        <artifactId>justsimple-parent</artifactId>
+        <version>4.1.1-SNAPSHOT</version>
+        <relativePath>../../justsimple-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>justsimple-base-bundle3</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../justsimple-projects/justsimple-web/justsimple-sessionstate-jedis</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-sessionstate-local</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-sessionstate-jwt</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-sessionstate-redisson</module>
+
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-webdav</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-staticfiles</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-cors</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-stop</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-sdl</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-sse</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-vertx</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-servlet</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-webservices</module>
+        <module>../../justsimple-projects/justsimple-web/justsimple-web-version</module>
+
+        <module>../../justsimple-projects/justsimple-net/justsimple-net</module>
+        <module>../../justsimple-projects/justsimple-net/justsimple-net-stomp</module>
+        <module>../../justsimple-projects/justsimple-net/justsimple-net-httputils</module>
+    </modules>
+</project>

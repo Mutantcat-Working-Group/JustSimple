@@ -1,0 +1,157 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package features;
+
+import features._model.UserModel;
+import org.junit.jupiter.api.Test;
+import org.noear.snack4.ONode;
+import org.mutantcat.justsimple.test.HttpTester;
+import org.mutantcat.justsimple.test.JustSimpleTest;
+import webapp.App;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author noear 2021/12/3 created
+ */
+@JustSimpleTest(App.class)
+public class HttpJsonTest extends HttpTester {
+    @Test
+    public void json_map() throws Exception {
+        ONode oNode = new ONode();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+        oNode.set("1", ONode.ofBean(userModel));
+
+        assert path("/demo2/json/map").bodyOfJson(oNode.toJson()).post().equals("12");
+    }
+
+    @Test
+    public void json_map2() throws Exception {
+        ONode oNode = new ONode();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+        oNode.set("1", ONode.ofBean(userModel));
+
+        ONode oNode1 = new ONode();
+        oNode1.set("userMap", oNode);
+
+        assert path("/demo2/json/map").bodyOfJson(oNode1.toJson()).post().equals("12");
+    }
+
+    @Test
+    public void json_bean() throws Exception {
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+
+        String json = path("/demo2/json/bean").bodyOfJson(ONode.ofBean(userModel).toJson()).post();
+        assert ONode.ofJson(json).get("id").getInt() == 12;
+    }
+
+    @Test
+    public void json_bean_map_str() throws Exception {
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+
+        String json = path("/demo2/json/bean_map_str").bodyOfJson(ONode.ofBean(userModel).toJson()).post();
+        assert json.startsWith("{");
+        assert ONode.ofJson(json).get("id").getInt() == 12;
+    }
+
+    @Test
+    public void json_list() throws Exception {
+        List<UserModel> list = new ArrayList<>();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+
+        list.add(userModel);
+
+        userModel = new UserModel();
+        userModel.id = 13;
+
+        list.add(userModel);
+
+        assert path("/demo2/json/list").bodyOfJson(ONode.ofBean(list).toJson()).post().equals("12");
+    }
+
+    @Test
+    public void json_list_query() throws Exception {
+        List<UserModel> list = new ArrayList<>();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+
+        list.add(userModel);
+
+        userModel = new UserModel();
+        userModel.id = 13;
+
+        list.add(userModel);
+
+        assert path("/demo2/json/list_query1?query1=a").bodyOfJson(ONode.ofBean(list).toJson()).post().equals("a:query1=a");
+    }
+
+    @Test
+    public void json_map_r() throws Exception {
+        ONode oNode = new ONode();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+        oNode.set("1", ONode.ofBean(userModel));
+
+        String rst = path("/demo2/json/map_r")
+                .header("Accept", "application/xml")
+                .bodyOfJson(oNode.toJson()).post();
+
+        assert rst.contains("<id>12</id>");
+        assert rst.contains("@type") == false;
+    }
+
+    @Test
+    public void json_map_r2() throws Exception {
+        ONode oNode = new ONode();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+        oNode.set("1", ONode.ofBean(userModel));
+
+        String rst = path("/demo2/json/map_r")
+                .header("Accept", "application/json")
+                .bodyOfJson(oNode.toJson()).post();
+
+        assert rst.startsWith("{\"1\":{\"id\":12,\"sex\":0,\"date\":");
+        assert rst.contains("@type") == false;
+    }
+
+    @Test
+    public void json_map_xml() throws Exception {
+        ONode oNode = new ONode();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+        oNode.set("1", ONode.ofBean(userModel));
+
+        String rst = path("/demo2/json/map_xml")
+                .bodyOfJson(oNode.toJson()).post();
+
+        assert rst.contains("<id>12</id>");
+        assert rst.contains("@type") == false;
+    }
+}

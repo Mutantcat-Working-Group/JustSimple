@@ -1,0 +1,20 @@
+justsimple.app:
+  name: demoapp
+
+justsimple.logging.appender:
+  console:
+    level: DEBUG
+  file:
+    level: INFO
+  cloud:
+    level: INFO
+
+
+justsimple.logging:
+  logger:
+    "root":
+      level: WARN
+    "features":
+      level: INFO
+
+

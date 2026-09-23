@@ -1,0 +1,79 @@
+{
+  "properties": [
+    {
+      "name": "justsimple.app.name",
+      "type": "java.lang.String",
+      "description": "应用名称"
+    },
+    {
+      "name": "justsimple.app.group",
+      "type": "java.lang.String",
+      "description": "应用分组"
+    },
+    {
+      "name": "justsimple.app.namespace",
+      "type": "java.lang.String",
+      "description": "应用命名空间"
+    },
+    {
+      "name": "justsimple.app.title",
+      "type": "java.lang.String",
+      "description": "应用标题"
+    },
+    {
+      "name": "justsimple.app.version",
+      "type": "java.lang.String",
+      "description": "应用版本号"
+    },
+    {
+      "name": "justsimple.app.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "应用是否启用"
+    },
+    {
+      "name": "justsimple.stop.safe",
+      "type": "java.lang.Integer",
+      "defaultValue": 0,
+      "description": "应用是否安全停止"
+    },
+    {
+      "name": "justsimple.stop.delay",
+      "type": "java.lang.Integer",
+      "defaultValue": 10,
+      "description": "应用安全停止延时（单位：秒）"
+    },
+    {
+      "name": "justsimple.extend",
+      "type": "java.lang.String",
+      "description": "应用体外扩展目录"
+    },
+    {
+      "name": "justsimple.config.add",
+      "type": "java.lang.String",
+      "description": "应用体外扩展配置"
+    },
+    {
+      "name": "justsimple.config.load",
+      "type": "java.lang.String[]",
+      "description": "应用体外扩展配置"
+    },
+    {
+      "name": "justsimple.output.meta",
+      "type": "java.lang.Integer",
+      "defaultValue": 0,
+      "description": "应用是否输出元信息"
+    },
+    {
+      "name": "justsimple.env",
+      "type": "java.lang.String",
+      "description": "应用环境配置"
+    },
+    {
+      "name": "justsimple.threads.virtual.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "虚拟线程池启用（默认false）"
+    }
+  ]
+}

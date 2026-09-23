@@ -1,0 +1,101 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.view.velocity.tags;
+
+import org.apache.velocity.context.InternalContextAdapter;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.directive.Directive;
+import org.apache.velocity.runtime.parser.node.ASTBlock;
+import org.apache.velocity.runtime.parser.node.ASTStringLiteral;
+import org.apache.velocity.runtime.parser.node.Node;
+import org.mutantcat.justsimple.Utils;
+import org.mutantcat.justsimple.auth.AuthUtil;
+import org.mutantcat.justsimple.auth.annotation.Logical;
+import org.mutantcat.justsimple.auth.tags.AuthConstants;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 授权给权限
+ *
+ * @author noear
+ * @since 1.4
+ */
+public class AuthPermissionsTag extends Directive {
+    @Override
+    public String getName() {
+        return AuthConstants.TAG_authPermissions;
+    }
+
+    @Override
+    public int getType() {
+        return BLOCK;
+    }
+
+    @Override
+    public boolean render(InternalContextAdapter context, Writer writer, Node node) throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
+        int attrNum = node.jjtGetNumChildren();
+
+        if (attrNum == 0) {
+            return true;
+        }
+
+        ASTBlock innerBlock = null;
+        List<String> attrList = new ArrayList<>();
+        for (int i = 0; i < attrNum; i++) {
+            Node n1 = node.jjtGetChild(i);
+            if (n1 instanceof ASTStringLiteral) {
+                attrList.add((String) n1.value(context));
+                continue;
+            }
+
+            if (n1 instanceof ASTBlock) {
+                innerBlock = (ASTBlock) n1;
+            }
+        }
+
+        if (innerBlock == null || attrList.size() == 0) {
+            return true;
+        }
+
+
+        String nameStr = attrList.get(0);
+        String logicalStr = null;
+        if (attrList.size() > 1) {
+            logicalStr = attrList.get(1);
+        }
+
+        if (Utils.isNotEmpty(nameStr)) {
+
+            String[] names = nameStr.split(",");
+            if (names.length > 0) {
+                if (AuthUtil.verifyPermissions(names, Logical.of(logicalStr))) {
+                    StringWriter content = new StringWriter();
+                    innerBlock.render(context, content);
+                    writer.write(content.toString());
+                }
+            }
+        }
+
+        return true;
+    }
+}

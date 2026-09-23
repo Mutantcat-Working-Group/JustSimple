@@ -1,0 +1,21 @@
+{
+  "properties": [
+    {
+      "name": "justsimple.staticfiles.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "静态文件服务是否启用"
+    },
+    {
+      "name": "justsimple.staticfiles.maxAge",
+      "type": "java.lang.Integer",
+      "defaultValue": 600,
+      "description": "静态文件的304缓存时长（默认为10分钟）"
+    },
+    {
+      "name": "justsimple.staticfiles.mappings",
+      "type": "org.mutantcat.justsimple.web.staticfiles.model.MappingItem[]",
+      "description": "静态文件映射（文件或目录）"
+    }
+  ]
+}

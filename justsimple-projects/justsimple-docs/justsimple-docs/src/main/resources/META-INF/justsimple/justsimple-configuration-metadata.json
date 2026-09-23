@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "justsimple.docs.discover.pathPattern",
+      "type": "org.mutantcat.justsimple.docs.integration.properties.DocsProperties",
+      "description": "文档配置"
+    }
+  ]
+}

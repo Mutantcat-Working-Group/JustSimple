@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mutantcat.justsimple</groupId>
+        <artifactId>justsimple-parent</artifactId>
+        <version>4.1.1-SNAPSHOT</version>
+        <relativePath>../../justsimple-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>justsimple-base-bundle4</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../justsimple-projects/justsimple-faas/justsimple-faas-luffy</module>
+
+        <module>../../justsimple-projects/justsimple-detector/justsimple-health</module>
+        <module>../../justsimple-projects/justsimple-detector/justsimple-health-detector</module>
+
+        <module>../../justsimple-projects/justsimple-scheduling/justsimple-scheduling</module>
+        <module>../../justsimple-projects/justsimple-scheduling/justsimple-scheduling-simple</module>
+        <module>../../justsimple-projects/justsimple-scheduling/justsimple-scheduling-quartz</module>
+
+        <module>../../justsimple-projects/justsimple-shell/justsimple-shell</module>
+
+        <module>../../justsimple-projects/justsimple-view/justsimple-view</module>
+        <module>../../justsimple-projects/justsimple-view/justsimple-view-aifei-enjoy</module>
+        <module>../../justsimple-projects/justsimple-view/justsimple-view-freemarker</module>
+        <module>../../justsimple-projects/justsimple-view/justsimple-view-jsp</module>
+        <module>../../justsimple-projects/justsimple-view/justsimple-view-velocity</module>
+        <module>../../justsimple-projects/justsimple-view/justsimple-view-thymeleaf</module>
+        <module>../../justsimple-projects/justsimple-view/justsimple-view-enjoy</module>
+        <module>../../justsimple-projects/justsimple-view/justsimple-view-beetl</module>
+
+        <module>../../justsimple-projects/justsimple-logging/justsimple-logging</module>
+        <module>../../justsimple-projects/justsimple-logging/justsimple-logging-log4j2</module>
+        <module>../../justsimple-projects/justsimple-logging/justsimple-logging-logback</module>
+        <module>../../justsimple-projects/justsimple-logging/justsimple-logging-simple</module>
+    </modules>
+</project>

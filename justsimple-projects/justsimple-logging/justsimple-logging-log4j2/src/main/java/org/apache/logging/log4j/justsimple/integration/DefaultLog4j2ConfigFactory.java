@@ -1,0 +1,251 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.logging.log4j.justsimple.integration;
+
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.builder.api.*;
+import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
+import org.mutantcat.justsimple.JustSimple;
+
+import java.util.regex.Matcher;
+
+/**
+ * Log4j2 日志默认配置
+ *
+ * @author noear
+ * @since 3.9.2
+ */
+public class DefaultLog4j2ConfigFactory {
+    static Configuration createConfiguration(ConfigurationBuilder<BuiltConfiguration> builder) {
+        boolean fileEnable = JustSimple.cfg().getBool("justsimple.logging.appender.file.enable", true);
+        boolean consoleEnable = JustSimple.cfg().getBool("justsimple.logging.appender.console.enable", true);
+
+        // 1. 全局配置
+        builder.setPackages("org.apache.logging.log4j.justsimple");
+
+        // 2. 提取变量 (模拟 XML 中的 Properties)
+        String appName = System.getProperty("justsimple.app.name", "justsimple");
+
+        // 3. 创建 Console Appender
+        if (consoleEnable) {
+            String consolePattern = System.getProperty("justsimple.logging.appender.console.pattern",
+                    "%highlight{%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} #%5X{pid} [-%t][*%X{traceId}]%tags[%logger{20}]:} %n%msg%n");
+
+
+            AppenderComponentBuilder consoleAppender = builder.newAppender("Console", "Console")
+                    .addAttribute("target", "SYSTEM_OUT")
+                    .addAttribute("follow", true);
+            consoleAppender.add(builder.newLayout("PatternLayout")
+                    .addAttribute("pattern", consolePattern)
+                    .addAttribute("disableAnsi", false));
+            consoleAppender.add(builder.newFilter("ThresholdFilter", Filter.Result.ACCEPT, Filter.Result.DENY)
+                    .addAttribute("level", System.getProperty("justsimple.logging.appender.console.level", "TRACE")));
+            builder.add(consoleAppender);
+        }
+
+        // 4. 创建 RollingFile Appender
+        if (fileEnable) {
+            String fileLogName = System.getProperty("justsimple.logging.appender.file.name", "logs/" + appName);
+            String maxFileSize = System.getProperty("justsimple.logging.appender.file.maxFileSize", "10 MB");
+            String totalSizeCap = System.getProperty("justsimple.logging.appender.file.totalSizeCap", "0");
+
+
+            ComponentBuilder<?> policies = builder.newComponent("Policies")
+                    .addComponent(builder.newComponent("TimeBasedTriggeringPolicy"))
+                    .addComponent(builder.newComponent("SizeBasedTriggeringPolicy").addAttribute("size", maxFileSize));
+
+
+            String filePattern = fileLogName + "_%d{yyyy-MM-dd}_%i.log";
+
+            AppenderComponentBuilder fileAppender = builder.newAppender("File", "RollingFile")
+                    .addAttribute("fileName", fileLogName + ".log")
+                    .addAttribute("filePattern", filePattern);
+            fileAppender.add(builder.newLayout("PatternLayout")
+                    .addAttribute("pattern", System.getProperty("justsimple.logging.appender.file.pattern", "%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} #%5X{pid} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n")));
+            fileAppender.add(builder.newFilter("ThresholdFilter", Filter.Result.ACCEPT, Filter.Result.DENY)
+                    .addAttribute("level", System.getProperty("justsimple.logging.appender.file.level", "INFO")));
+            fileAppender.addComponent(policies);
+            ComponentBuilder<?> rolloverStrategy = builder.newComponent("DefaultRolloverStrategy")
+                    .addAttribute("max", System.getProperty("justsimple.logging.appender.file.maxHistory", "7"));
+
+            if (parseSizeBytes(totalSizeCap) > 0) {
+                // 模拟 logback 的 totalSizeCap：超过总大小时，滚动并删除最旧的文件
+                String fileName = fileLogName.replaceAll("^.*[\\\\/]", "");
+                String[] scope = resolveDeleteScope(filePattern);
+                String basePath = scope[0];
+                int maxDepth = Integer.parseInt(scope[1]);
+
+                rolloverStrategy.addComponent(builder.newComponent("Delete")
+                        .addAttribute("basePath", basePath)
+                        .addAttribute("maxDepth", String.valueOf(maxDepth))
+                        .addComponent(builder.newComponent("IfFileName")
+                        // glob 只匹配归档文件（name_日期_序号.log），排除活动文件 name.log
+                        // glob 匹配的是相对 basePath 的完整路径，加 "**/" 前缀以覆盖子目录场景（**/ 可匹配零层，单目录同样兼容）
+                        // glob 匹配的是相对 basePath 的完整路径；用分组同时覆盖单目录（app_*.log）与子目录（**/app_*.log）两种深度
+                        .addAttribute("glob", "{" + fileName + "_*.log,**/" + fileName + "_*.log}"))
+                        .addComponent(builder.newComponent("IfAccumulatedFileSize")
+                                .addAttribute("exceeds", totalSizeCap)));
+            }
+
+            fileAppender.addComponent(rolloverStrategy);
+            builder.add(fileAppender);
+        }
+
+        // 5. 创建 JustSimple 自定义 Appender
+        AppenderComponentBuilder justsimpleAppender = builder.newAppender("JustSimple", "JustSimple");
+        justsimpleAppender.add(builder.newFilter("ThresholdFilter", Filter.Result.ACCEPT, Filter.Result.DENY)
+                .addAttribute("level", "TRACE"));
+        builder.add(justsimpleAppender);
+
+        // 6. 配置 Root Logger
+        RootLoggerComponentBuilder rootLogger = builder.newRootLogger(System.getProperty("justsimple.logging.logger.root.level", "TRACE"));
+
+        if (consoleEnable) {
+            rootLogger.add(builder.newAppenderRef("Console"));
+        }
+
+        if (fileEnable) {
+            rootLogger.add(builder.newAppenderRef("File"));
+        }
+
+        rootLogger.add(builder.newAppenderRef("JustSimple"));
+        builder.add(rootLogger);
+
+        return builder.build();
+    }
+
+    /**
+     * 根据 filePattern 推导 Delete 清理范围：
+     * basePath 取目录链中最深的静态目录（截到首个含 % 的动态段之前），避免向上扫描无关/无权/符号链接目录；
+     * maxDepth = 1 + 动态段数（动态目录段如 %d{yyyy/MM} 会展开为多级子目录）
+     *
+     * @return [0]=basePath, [1]=maxDepth
+     */
+    static String[] resolveDeleteScope(String filePattern) {
+        String dirPart = filePattern.replaceAll("[\\\\/][^\\\\/]*$", "");
+
+        if (dirPart.equals(filePattern)) {
+            // filePattern 无目录部分，清理当前目录
+            return new String[]{".", "1"};
+        }
+
+        String[] dirSegments = dirPart.split("[\\\\/]+");
+
+        // 过滤空段（绝对路径打头产生的空段、连续分隔符等）
+        java.util.List<String> segments = new java.util.ArrayList<>();
+        for (String seg : dirSegments) {
+            if (seg.isEmpty() == false) {
+                segments.add(seg);
+            }
+        }
+
+        if (segments.isEmpty()) {
+            // filePattern 直接位于根目录（如 "/app_%d.log"）
+            return new String[]{"/", "1"};
+        }
+
+        // 统计静态目录段：首个含 % 的段及其后均为动态段
+        int staticCount = 0;
+        for (String seg : segments) {
+            if (seg.indexOf('%') >= 0) {
+                break;
+            }
+            staticCount++;
+        }
+
+        // 拼接静态目录链
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < staticCount; i++) {
+            if (buf.length() > 0) {
+                buf.append('/');
+            }
+            buf.append(segments.get(i));
+        }
+        String basePath = buf.length() == 0 ? "." : buf.toString();
+
+        // 绝对路径补根（如 "/var/log" 补为 "/var/log"；仅根时为 "/"）
+        if (dirPart.startsWith("/")) {
+            basePath = basePath.equals(".") ? "/" : "/" + basePath;
+        }
+
+        // Windows 盘符段，补斜杠避免被视为盘符相对路径（如 "C:" -> "C:/"）
+        if (basePath.length() == 2 && basePath.charAt(1) == ':') {
+            basePath = basePath + "/";
+        }
+
+        // 静态目录下文件深度为 1，每个动态目录段额外展开一级（含 %d{yyyy/MM} 内部分隔符已计入段数）
+        int maxDepth = 1 + (segments.size() - staticCount);
+
+        return new String[]{basePath, String.valueOf(maxDepth)};
+    }
+
+    /**
+     * 解析大小字符串（如 "10 MB"、"1GB"），返回字节数；无法解析时返回 0
+     */
+    static long parseSizeBytes(String size) {
+        if (size == null) {
+            return 0;
+        }
+
+        String value = size.trim();
+
+        if (value.isEmpty()) {
+            return 0;
+        }
+
+        Matcher matcher = java.util.regex.Pattern
+                .compile("^([\\d.]+)\\s*([a-zA-Z]+)?$")
+                .matcher(value);
+
+        if (matcher.matches() == false) {
+            return 0;
+        }
+
+        try {
+            double num = Double.parseDouble(matcher.group(1));
+            String unit = matcher.group(2) == null ? "" : matcher.group(2).toUpperCase();
+
+            switch (unit) {
+                case "":
+                case "B":
+                    break;
+                case "K":
+                case "KB":
+                    num = num * 1024;
+                    break;
+                case "M":
+                case "MB":
+                    num = num * 1024 * 1024;
+                    break;
+                case "G":
+                case "GB":
+                    num = num * 1024 * 1024 * 1024;
+                    break;
+                case "T":
+                case "TB":
+                    num = num * 1024L * 1024 * 1024 * 1024;
+                    break;
+                default:
+                    return 0;
+            }
+
+            return (long) num;
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+}

@@ -1,0 +1,94 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.test.data;
+
+import org.mutantcat.justsimple.JustSimple;
+import org.mutantcat.justsimple.Utils;
+import org.mutantcat.justsimple.core.AppContext;
+import org.mutantcat.justsimple.core.aspect.Invocation;
+import org.mutantcat.justsimple.core.aspect.MethodInterceptor;
+import org.mutantcat.justsimple.core.util.RunnableEx;
+import org.mutantcat.justsimple.data.annotation.TransactionAnno;
+import org.mutantcat.justsimple.data.tran.TranUtils;
+import org.mutantcat.justsimple.test.annotation.Rollback;
+
+import java.util.concurrent.atomic.AtomicReference;
+
+/**
+ * 回滚拦截器
+ *
+ * @author noear
+ * @since 1.10
+ */
+public class RollbackInterceptor implements MethodInterceptor {
+    @Override
+    public Object doIntercept(Invocation inv) throws Throwable {
+        if (JustSimple.app() == null) {
+            //没有容器，没法运行事务回滚
+            return inv.invoke();
+        } else {
+            AtomicReference valRef = new AtomicReference();
+
+            //尝试找函数上的
+            Rollback anno = inv.getMethodAnnotation(Rollback.class);
+
+            //尝试找类上的
+            if (anno == null) {
+                anno = inv.getTargetAnnotation(Rollback.class);
+            }
+
+            if (anno == null || anno.value() == false) {
+                //如果没有注解，或者不需要强制回滚
+                return inv.invoke();
+            } else {
+                //如果需要强制回滚
+                rollbackDo(inv.context(), () -> {
+                    valRef.set(inv.invoke());
+                });
+
+                return valRef.get();
+            }
+        }
+    }
+
+    /**
+     * 回滚事务
+     *
+     * @since 3.5
+     */
+    public static void rollbackDo(AppContext context, RunnableEx runnable) throws Throwable {
+        try {
+            //应用 //添加路由拦截器（放到最里层）
+            context.app().chains().addRouterInterceptorIfAbsent(RollbackRouterInterceptor.getInstance(), Integer.MAX_VALUE);
+
+            //当前
+            TranUtils.execute(new TransactionAnno(), () -> {
+                runnable.run();
+                throw new RollbackException();
+            });
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
+            if (e instanceof RollbackException) {
+                System.out.println("@Rollback: the transaction has been rolled back!");
+            } else {
+                throw e;
+            }
+        } finally {
+            //应用 //移除路由拦截器（恢复原状）
+            context.app().chains().removeRouterInterceptor(RollbackRouterInterceptor.class);
+        }
+    }
+}

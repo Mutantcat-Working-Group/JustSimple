@@ -1,0 +1,59 @@
+{
+  "properties": [
+    {
+      "name": "justsimple.cache.driverType",
+      "type": "java.lang.String",
+      "defaultValue": "local",
+      "description": "缓存驱动类型"
+    },
+    {
+      "name": "justsimple.dataSources.*.class",
+      "type": "java.lang.Class",
+      "description": "数据源类名"
+    },
+    {
+      "name": "justsimple.dataSources.*.driverClassName",
+      "type": "java.lang.Class",
+      "description": "驱动类名"
+    },
+    {
+      "name": "justsimple.dataSources.*.url",
+      "type": "java.lang.String",
+      "description": "连接地址"
+    },
+    {
+      "name": "justsimple.dataSources.*.jdbcUrl",
+      "type": "java.lang.String",
+      "description": "连接地址"
+    },
+    {
+      "name": "justsimple.dataSources.*.username",
+      "type": "java.lang.String",
+      "description": "用户名"
+    },
+    {
+      "name": "justsimple.dataSources.*.paasword",
+      "type": "java.lang.String",
+      "description": "密码"
+    }
+  ],
+  "hints": [
+    {
+      "name": "justsimple.cache.driverType",
+      "values": [
+        {
+          "value": "local",
+          "description": "本地缓存"
+        },
+        {
+          "value": "redis",
+          "description": "Redis缓存"
+        },
+        {
+          "value": "memcached",
+          "description": "Memcached缓存"
+        }
+      ]
+    }
+  ]
+}

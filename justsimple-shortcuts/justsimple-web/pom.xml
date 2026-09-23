@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mutantcat.justsimple</groupId>
+        <artifactId>justsimple-parent</artifactId>
+        <version>4.1.1-SNAPSHOT</version>
+        <relativePath>../../justsimple-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>justsimple-web</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-lib</artifactId>
+        </dependency>
+
+        <!-- Http 启动器 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-server-smarthttp</artifactId>
+        </dependency>
+
+        <!-- Json序列化支持插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-serialization-snack4</artifactId>
+        </dependency>
+
+        <!-- 本地SessionSate支持插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-sessionstate-local</artifactId>
+        </dependency>
+
+        <!-- 静态文件支持插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-web-staticfiles</artifactId>
+        </dependency>
+
+        <!-- 跨域处理插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-web-cors</artifactId>
+        </dependency>
+
+        <!-- 接口版本插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-web-version</artifactId>
+        </dependency>
+
+        <!-- 参数与实体验证扩展插件 -->
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-security-validation</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

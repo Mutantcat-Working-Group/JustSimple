@@ -1,0 +1,63 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.github.xiaoymin.knife4j.justsimple.integration;
+
+import com.github.xiaoymin.knife4j.justsimple.extension.OpenApiExtensionResolver;
+import com.github.xiaoymin.knife4j.justsimple.settings.OpenApiSetting;
+import org.mutantcat.justsimple.Utils;
+import org.mutantcat.justsimple.core.AppContext;
+import org.mutantcat.justsimple.core.Plugin;
+import org.mutantcat.justsimple.docs.DocDocket;
+import org.mutantcat.justsimple.web.staticfiles.StaticMappings;
+import org.mutantcat.justsimple.web.staticfiles.repository.ClassPathStaticRepository;
+
+/**
+ * @author noear
+ * @since 2.2
+ */
+public class Knife4jPlugin implements Plugin {
+
+    @Override
+    public void start(AppContext context) throws Throwable {
+        OpenApiExtensionResolver openApiExtensionResolver = context.wrapAndPut(OpenApiExtensionResolver.class).get();
+        OpenApiSetting setting = openApiExtensionResolver.getSetting();
+
+        if (setting.isEnable() == false) {
+            return;
+        }
+
+        if (setting.isProduction() && !context.app().cfg().isFilesMode()) {
+            //生产环境，只有 files 模式才能用（即开发模式）
+            return;
+        }
+
+        StaticMappings.add("/doc.html", new ClassPathStaticRepository("META-INF/resources/"));
+        StaticMappings.add("/img/", new ClassPathStaticRepository("META-INF/resources/img/"));
+        StaticMappings.add("/webjars/", new ClassPathStaticRepository("META-INF/resources/webjars/"));
+
+        context.app().router().add("/", Knife4jController.class);         //注册控制器
+
+        //添加 auth
+        context.subBeansOfType(DocDocket.class, bean -> {
+            if (Utils.isEmpty(bean.basicAuth())) {
+                //如果没有定义，则用全局的配置
+                bean.basicAuth(setting.getBasic());
+            }
+
+            bean.vendorExtensions(openApiExtensionResolver.buildExtensions());
+        });
+    }
+}

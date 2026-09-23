@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <conversionRule conversionWord="tags" converterClass="ch.qos.logback.justsimple.JustSimpleTagsConverter" />
+
+    <justsimpleProperty name="APP_NAME" source="justsimple.app.name"
+                   defaultValue="justsimple" />
+
+
+    <justsimpleProperty name="CONSOLE_LOG_PATTERN" source="justsimple.logging.appender.console.pattern"
+                   defaultValue="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} #${PID:-} [-%t][*%X{traceId}]%tags[%logger{20}]:) %n%msg%n" />
+
+    <justsimpleProperty name="CONSOLE_LOG_LEVEL" source="justsimple.logging.appender.console.level"
+                   defaultValue="TRACE" />
+
+
+    <justsimpleProperty name="FILE_LOG_NAME" source="justsimple.logging.appender.file.name"
+                   defaultValue="logs/${APP_NAME}" />
+
+    <justsimpleProperty name="FILE_LOG_PATTERN" source="justsimple.logging.appender.file.pattern"
+                   defaultValue="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} #${PID:-} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n" />
+
+    <justsimpleProperty name="FILE_LOG_LEVEL" source="justsimple.logging.appender.file.level"
+                   defaultValue="INFO" />
+    <justsimpleProperty name="FILE_LOG_MAX_HISTORY" source="justsimple.logging.appender.file.maxHistory"
+                   defaultValue="7" />
+    <justsimpleProperty name="FILE_LOG_MAX_FILE_SIZE" source="justsimple.logging.appender.file.maxFileSize"
+                   defaultValue="10 MB" />
+
+    <justsimpleProperty name="LOGGER_ROOT_LEVEL" source="justsimple.logging.logger.root.level"
+                   defaultValue="TRACE" />
+
+
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${CONSOLE_LOG_LEVEL}</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="JustSimple" class="ch.qos.logback.justsimple.JustSimpleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+    </appender>
+
+    <root>
+        <level value="${LOGGER_ROOT_LEVEL}" />
+        <appender-ref ref="Console"/>
+        <appender-ref ref="JustSimple"/>
+    </root>
+
+</configuration>

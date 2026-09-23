@@ -1,0 +1,59 @@
+package features.webrx;
+
+import demo.webrx.App;
+import org.junit.jupiter.api.Test;
+import org.mutantcat.justsimple.test.HttpTester;
+import org.mutantcat.justsimple.test.JustSimpleTest;
+
+/**
+ * @author noear 2024/8/30 created
+ */
+@JustSimpleTest(value = App.class, args = "--server.port=7071")
+public class Case2AppTest extends HttpTester {
+    @Test
+    public void test1() throws Exception {
+        assert path("/case2/m1?name=d").get().equals("Hello d");
+    }
+
+    @Test
+    public void test2() throws Exception {
+        assert path("/case2/f1?name=d").get().equals("[\"Hello d\",\"hello2 d\"]");
+    }
+
+//    @Test
+//    public void test3() throws Exception {
+//        String rst = path("/case1/f1?name=d").header("accept", MimeType.APPLICATION_X_NDJSON_VALUE).get();
+//        assert rst.equals("\"Hello d\"\n" +
+//                "\"hello2 d\"\n");
+//
+//    }
+
+    @Test
+    public void test3_2() throws Exception {
+        String rst = path("/case1/f1?name=d").get();
+        assert rst.equals("[\"Hello d\",\"hello2 d\"]");
+
+    }
+
+    @Test
+    public void test4() throws Exception {
+        String rst = path("/case1/f2?name=d").get();
+        assert rst.equals("\"Hello d\"\n" +
+                "\"hello2 d\"\n");
+    }
+
+    @Test
+    public void test5() throws Exception {
+        assert path("/case2/f3?name=d").get().equals("[\"Hello d\",\"hello2 d\"]");
+    }
+
+    @Test
+    public void test6() throws Exception {
+        assert 500 == path("/case2/t1?").head();
+    }
+
+    @Test
+    public void test7() throws Exception {
+        assert 200 == path("/case2/t2?").head();
+    }
+}

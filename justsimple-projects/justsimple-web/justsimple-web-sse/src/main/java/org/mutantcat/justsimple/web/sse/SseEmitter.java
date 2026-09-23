@@ -1,0 +1,206 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.web.sse;
+
+import org.mutantcat.justsimple.core.util.ConsumerEx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+/**
+ * Sse 发射器（操作界面）
+ *
+ * @author kongweiguang
+ * @since  2.3
+ */
+public class SseEmitter {
+    static final Logger log = LoggerFactory.getLogger(SseEmitter.class);
+
+    private SseEmitterHandler eventHandler;
+    private List<SseEvent> eventCached = new ArrayList<>();
+    private final ReentrantLock sendLock = new ReentrantLock();
+
+    protected Runnable onCompletion;
+    protected Runnable onTimeout;
+    protected Function<SseEvent, SseEvent> onSendPost;
+    protected Consumer<Throwable> onError;
+    protected ConsumerEx<SseEmitter> onInited;
+
+    protected long timeout;
+
+    /**
+     * 完成回调方法
+     */
+    public SseEmitter onCompletion(Runnable onCompletion) {
+        this.onCompletion = onCompletion;
+        return this;
+    }
+
+    /**
+     * 超时回调方法
+     */
+    public SseEmitter onTimeout(Runnable onTimeout) {
+        this.onTimeout = onTimeout;
+        return this;
+    }
+
+    /**
+     * 发送确认方法
+     */
+    public SseEmitter onSendPost(Function<SseEvent, SseEvent> onSendPost) {
+        this.onSendPost = onSendPost;
+        return this;
+    }
+
+    /**
+     * 异常回调方法
+     */
+    public SseEmitter onError(Consumer<Throwable> onError) {
+        this.onError = onError;
+        return this;
+    }
+
+    /**
+     * 初始化回调方法
+     */
+    public SseEmitter onInited(ConsumerEx<SseEmitter> onInited) {
+        this.onInited = onInited;
+        return this;
+    }
+
+    /**
+     * 超时（用于异步超时）
+     */
+    public SseEmitter(long timeout) {
+        this.timeout = timeout;
+    }
+
+    /**
+     * 出错
+     */
+    public void error(Throwable err) {
+        if (eventHandler != null) {
+            try {
+                eventHandler.stopOnError(err);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * 发送事件内容
+     *
+     * @param data 事件数据
+     */
+    public void send(String data) throws IOException {
+        send(new SseEvent().data(data));
+    }
+
+    /**
+     * 发送事件
+     *
+     * @param event 事件数据
+     */
+    public void send(SseEvent event) throws IOException {
+        if (completed.get()) {
+            throw new IllegalStateException("SseEmitter is completed");
+        }
+
+        if (onSendPost != null) {
+            event = onSendPost.apply(event);
+        }
+
+        if (event != null) {
+            sendLock.lock();
+            try {
+                if (eventHandler == null) {
+                    // 如果未初始化事件处理，先缓存事件
+                    eventCached.add(event);
+                } else {
+                    eventHandler.send(event);
+                }
+            } finally {
+                sendLock.unlock();
+            }
+        }
+    }
+
+    private final AtomicBoolean completed = new AtomicBoolean(false);
+
+    /**
+     * 是否已完成
+     */
+    public boolean isCompleted() {
+        return completed.get();
+    }
+
+    /**
+     * 完成（用于手动控制）
+     */
+    public void complete() {
+        try {
+            if (completed.compareAndSet(false, true)) {
+                if (eventHandler != null) {
+                    eventHandler.complete();
+                    eventHandler = null; // 避免再次调用
+                }
+            }
+        } catch (IOException e) {
+            log.warn(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 初始化
+     */
+    protected void initialize(SseEmitterHandler handler) throws Throwable {
+        sendLock.lock();
+        try {
+            this.eventHandler = handler;
+
+            // 1. 发送初始化之前的事件
+            if (eventCached != null) {
+                for (SseEvent event : eventCached) {
+                    eventHandler.send(event);
+                }
+                eventCached.clear();
+                eventCached = null; // 彻底释放，利于 GC
+            }
+        } finally {
+            sendLock.unlock();
+        }
+
+        // 2. 开始初始化（一般也是发消息）
+        if (onInited != null) {
+            onInited.accept(this);
+        }
+
+        if (completed.get()) {
+            // 如果已完成（初始化之前就意外完成了）
+            complete();
+        }
+    }
+}

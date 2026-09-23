@@ -1,0 +1,22 @@
+justsimple.app:
+  name: demoapp
+
+justsimple.logging.appender:
+  console:
+    level: DEBUG
+  file:
+    level: INFO
+    enable: false
+  cloud:
+    level: INFO
+  json:
+    level: DEBUG
+    class: "features.AppenderImpl"
+
+
+justsimple.logging:
+  logger:
+    "root":
+      level: INFO
+    "features":
+      level: TRACE

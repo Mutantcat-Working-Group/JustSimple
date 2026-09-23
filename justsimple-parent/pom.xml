@@ -1,0 +1,2474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>justsimple-parent</artifactId>
+    <version>4.1.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Java project for justsimple</description>
+    <url>https://github.com/Mutantcat-Working-Group/JustSimple</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <resource.delimiter>@</resource.delimiter>
+
+        <java.version>1.8</java.version>
+
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
+
+        <maven-compiler.version>3.14.0</maven-compiler.version>
+        <maven-assembly.version>3.7.0</maven-assembly.version>
+        <maven-resources.version>3.3.1</maven-resources.version>
+        <maven-surefire.version>3.5.5</maven-surefire.version>
+
+        <maven-war.version>3.4.0</maven-war.version>
+
+        <justsimple.version>4.1.1-SNAPSHOT</justsimple.version>
+        <justsimple-ai.version>4.1.1-SNAPSHOT</justsimple-ai.version>
+        <justsimple-flow.version>4.1.0</justsimple-flow.version>
+        <justsimple-expression.version>4.1.0</justsimple-expression.version>
+        <justsimple-cloud.version>4.1.0</justsimple-cloud.version>
+        <justsimple-admin.version>4.1.0</justsimple-admin.version>
+        <justsimple-integration.version>4.1.0</justsimple-integration.version>
+        <justsimple-java17.version>4.1.0</justsimple-java17.version>
+        <justsimple-java25.version>4.1.0</justsimple-java25.version>
+
+        <solonx.version>1.4.0</solonx.version>
+
+        <eggg.version>1.1.5</eggg.version>
+        <snack4.version>4.0.59</snack4.version>
+        <wood.version>1.4.5</wood.version>
+        <redisx.version>1.8.6</redisx.version>
+        <socketd.version>2.6.0</socketd.version>
+        <liquor.version>1.6.8</liquor.version>
+
+        <snack3.version>3.2.139</snack3.version>
+        <weed3.version>3.4.33</weed3.version>
+
+        <folkmq.version>1.8.0</folkmq.version>
+        <water.version>2.20.0</water.version>
+        <luffy.version>1.12.0</luffy.version>
+        <solon.version>4.1.0</solon.version>
+
+        <java-cron.version>1.0.3</java-cron.version>
+
+        <redisson.version>3.52.0</redisson.version>
+        <lettuce.version>6.8.2.RELEASE</lettuce.version>
+
+        <fastjson.version>1.2.84</fastjson.version>
+        <fastjson2.version>2.0.64</fastjson2.version>
+        <okhttp.version>4.12.0</okhttp.version>
+        <hutool.version>5.8.44</hutool.version>
+
+        <asm.version>9.10</asm.version>
+        <jspecify.version>1.0.0</jspecify.version>
+        <jline.version>3.30.9</jline.version>
+
+        <r2dbc.version>1.0.0.RELEASE</r2dbc.version>
+
+        <javax.servlet.version>4.0.1</javax.servlet.version>
+        <jakarta.servlet.version>5.0.0</jakarta.servlet.version>
+
+        <grizzly.version>3.0.1</grizzly.version>
+        <jetty.version>9.4.58.v20250814</jetty.version>
+        <undertow.version>2.2.39.Final</undertow.version>
+        <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
+        <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
+        <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
+        <tomcat.version>9.0.118</tomcat.version>
+        <vertx.version>4.5.27</vertx.version>
+        <rxjava.version>3.1.9</rxjava.version>
+        <netty.version>4.1.134.Final</netty.version>
+        <reactor-core.version>3.8.5</reactor-core.version>
+        <reactor-netty-http.version>1.3.5</reactor-netty-http.version>
+        <mutiny.version>1.10.0</mutiny.version>
+
+
+        <micrometer.version>1.15.5</micrometer.version>
+        <opentracing.version>0.33.0</opentracing.version>
+        <opentelemetry.version>1.55.0</opentelemetry.version>
+
+        <jaeger.version>1.8.1</jaeger.version>
+        <brave.version>5.16.0</brave.version>
+        <zipkin-sender-okhttp3.version>2.16.4</zipkin-sender-okhttp3.version>
+        <brave-opentracing.version>1.0.0</brave-opentracing.version>
+
+
+        <snakeyaml.version>2.6</snakeyaml.version>
+
+        <swagger.version>1.6.16</swagger.version>
+        <swagger2.version>2.2.50</swagger2.version>
+        <knife4j.version>4.5.0</knife4j.version>
+        <therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
+
+        <jackson.version>2.21.4</jackson.version>
+        <jackson-annotations.version>2.21</jackson-annotations.version>
+        <gson.version>2.14.0</gson.version>
+        <fury.version>0.10.3</fury.version>
+        <fory.version>1.5.0</fory.version>
+        <hessian.version>4.0.66</hessian.version>
+        <hessian-sofa.version>4.1.1-SNAPSHOT</hessian-sofa.version>
+        <hessian-lite.version>4.0.3</hessian-lite.version>
+        <protostuff.version>1.8.0</protostuff.version>
+        <kryo.version>5.6.2</kryo.version>
+        <agrona-sbe.version>1.22.0</agrona-sbe.version>
+        <chronicle-bytes.version>2.27ea0</chronicle-bytes.version>
+
+        <apache.pdfbox.version>2.0.29</apache.pdfbox.version>
+        <apache.poi.version>5.5.0</apache.poi.version>
+        <commonmark.version>0.20.0</commonmark.version>
+        <jsoup.version>1.18.3</jsoup.version>
+
+        <junit4.version>4.13.2</junit4.version>
+        <junit5.version>5.14.4</junit5.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <mockito.version>4.11.0</mockito.version>
+
+        <hikaricp.version>4.0.3</hikaricp.version>
+        <hikaricp5.version>5.1.0</hikaricp5.version>
+
+        <guava.version>33.5.0-jre</guava.version>
+
+        <slf4j.version>2.0.18</slf4j.version>
+        <log4j.version>2.26.0</log4j.version>
+        <logback.version>1.3.16</logback.version>
+        <jansi.version>2.4.3</jansi.version>
+
+        <hazelcast.version>5.1</hazelcast.version>
+        <lombok.version>1.18.46</lombok.version>
+
+        <protobuf.version>3.22.3</protobuf.version>
+        <grpc.version>1.69.1</grpc.version>
+        <thrift.version>0.20.0</thrift.version>
+        <dubbo2.version>2.7.5</dubbo2.version>
+        <dubbo3.version>3.3.5</dubbo3.version>
+
+        <rocketmq4.version>4.9.7</rocketmq4.version>
+        <rocketmq5.version>5.2.0</rocketmq5.version>
+        <activemq.version>5.16.7</activemq.version>
+        <rabbitmq.version>5.19.0</rabbitmq.version>
+        <kafka_2.13.version>3.9.2</kafka_2.13.version>
+        <kafka.version>3.9.2</kafka.version>
+        <pulsar.version>2.11.2</pulsar.version>
+
+        <nacos1.version>1.4.8</nacos1.version>
+        <nacos2.version>2.5.1</nacos2.version>
+        <nacos3.version>3.2.1</nacos3.version>
+        <zookeeper.version>3.9.5</zookeeper.version>
+        <jetcd.version>0.7.7</jetcd.version>
+        <polaris.version>1.14.1</polaris.version>
+
+        <feign.version>8.18.0</feign.version>
+        <aws.s3.version>2.28.20</aws.s3.version>
+        <quartz.version>2.3.2</quartz.version>
+        <powerjob.version>5.1.0</powerjob.version>
+
+        <sa-token.version>1.44.0</sa-token.version>
+        <sms4j.version>3.3.5</sms4j.version>
+
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <graalvm.buildtools.version>0.11.0</graalvm.buildtools.version>
+
+        <beetl.version>3.19.1.RELEASE</beetl.version>
+        <enjoy.version>5.1.3</enjoy.version>
+        <aifei-enjoy.version>1.0.1</aifei-enjoy.version>
+        <velocity.version>2.4.1</velocity.version>
+        <thymeleaf.version>3.1.3.RELEASE</thymeleaf.version>
+        <freemarker.version>2.3.34</freemarker.version>
+
+        <mybatis.version>3.5.17</mybatis.version>
+        <activerecord.version>5.1.3</activerecord.version>
+        <beetlsql.version>3.31-RELEASE</beetlsql.version>
+        <sqltoy.version>5.6.37.jre8</sqltoy.version>
+        <mybatis-flex.version>1.10.9</mybatis-flex.version>
+        <fastmybatis.version>2.10.0</fastmybatis.version>
+        <dbvisitor.version>6.0.0</dbvisitor.version>
+        <bean-searcher.version>4.3.2</bean-searcher.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+
+        <liteflow.version>2.13.0</liteflow.version>
+        <forest.version>1.6.3</forest.version>
+        <shardingsphere.version>5.3.2</shardingsphere.version>
+        <seata.version>2.0.0</seata.version>
+        <wx-java.version>4.7.2.B</wx-java.version>
+        <graphql-java.version>18.7</graphql-java.version>
+        <graphql-java-tools.version>13.1.1</graphql-java-tools.version>
+
+        <java-websocket.version>1.5.7</java-websocket.version>
+        <java-websocket-ns.version>1.2</java-websocket-ns.version>
+        <dromara-plugins.version>0.1.3</dromara-plugins.version>
+        <bcprov.version>1.83</bcprov.version>
+    </properties>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Mutantcat Working Group</name>
+            <organization>Mutantcat Working Group</organization>
+            <organizationUrl>https://github.com/Mutantcat-Working-Group</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:Mutantcat-Working-Group/JustSimple.git</connection>
+        <developerConnection>scm:git:git@github.com:Mutantcat-Working-Group/JustSimple.git</developerConnection>
+        <url>https://github.com/Mutantcat-Working-Group/JustSimple</url>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <name>Sonatype Snapshots</name>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solonx-licence</artifactId>
+                <version>${solonx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solonx-web-webservices</artifactId>
+                <version>${solonx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>liquor-eval</artifactId>
+                <version>${liquor.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikaricp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>snack3</artifactId>
+                <version>${snack3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>snack4</artifactId>
+                <version>${snack4.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>snack4-jsonpath</artifactId>
+                <version>${snack4.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>snack4-jsonschema</artifactId>
+                <version>${snack4.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>redisx</artifactId>
+                <version>${redisx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp-sse</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-cache</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-cache-caffeine</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-cache-redisson</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-cache-jedis</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-cache-spymemcached</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-java25</artifactId>
+                <version>${justsimple-java25.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-handle</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-mvc</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-jdkhttp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-netahttp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-smarthttp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-feathttp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-grizzly</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-grizzly-add-websocket</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-vertx</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-tomcat</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-tomcat-add-jsp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-tomcat-add-websocket</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-jetty</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-jetty-add-jsp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-jetty-add-websocket</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-undertow</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-undertow-add-jsp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-websocket</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-websocket-netty</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-server-socketd</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-faas-luffy</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-aot</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-proxy</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-flow</artifactId>
+                <version>${justsimple-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-flow-workflow</artifactId>
+                <version>${justsimple-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-flow-eval-aviator</artifactId>
+                <version>${justsimple-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-flow-eval-beetl</artifactId>
+                <version>${justsimple-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-flow-eval-magic</artifactId>
+                <version>${justsimple-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-core</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-router</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-agent</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-a2a</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-acp</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-flow</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-harness</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-sandbox</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-loop</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-mcp</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mcp-core</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mcp-json-jackson2</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>acp-agent-support</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>acp-annotations</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>acp-core</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-dialect-anthropic</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-dialect-dashscope</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-dialect-ollama</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-dialect-openai</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-dialect-gemini</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-search-baidu</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-search-bocha</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-search-tavily</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-chroma</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-dashvector</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-dashvector-official</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-weaviate</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-elasticsearch</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-milvus</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-mysql</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-opensearch</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-pgvector</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-qdrant</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-redis</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-tcvectordb</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-excel</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-html</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-ddl</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-markdown</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-pdf</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-ppt</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-word</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-cli</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-code</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-data</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-diff</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-file</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-generation</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-lsp</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-lucene</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-mail</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-memory</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-mount</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-pdf</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-social</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-sys</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-text2sql</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-gateway</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-talent-web</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-ui-aisdk</artifactId>
+                <version>${justsimple-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-rx</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-data-rx-sqlutils</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-data</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-data-sqlutils</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.noear</groupId>-->
+<!--                <artifactId>justsimple-data-sqlink</artifactId>-->
+<!--                <version>${justsimple.version}</version>-->
+<!--            </dependency>-->
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-data-dynamicds</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-data-shardingds</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-docs</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-docs-openapi2</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-docs-openapi2-javadoc</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-config-banner</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-docs-openapi3</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-hotplug</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-statemachine</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-expression</artifactId>
+                <version>${justsimple-expression.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-security-auth</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-security-sm</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-security-validation</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-security-vault</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-security-web</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-cors</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-web-gateway</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-rx</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-vertx</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-sdl</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-version</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-sse</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-stop</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-health</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-health-detector</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-servlet</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-webservices</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web-staticfiles</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-config-plus</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-config-snack3</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-config-snack4</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-config-yaml</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-shell</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-scheduling</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-scheduling-simple</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-scheduling-quartz</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-sessionstate-redisson</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-sessionstate-jedis</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-sessionstate-local</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-sessionstate-jwt</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-i18n</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-net</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-net-stomp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-net-httputils</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-net-httputils-java11</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-logging</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-logging-log4j2</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-logging-logback</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-logging-simple</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-fastjson</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-fastjson2</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-gson</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-jackson</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-serialization-jackson3</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-jackson-xml</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-serialization-jackson3-xml</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-snack3</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-snack4</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-properties</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-hessian</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-javabin</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <!-- @deprecated 4.0.5 -->
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-fury</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-fory</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-kryo</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-protostuff</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-serialization-abc</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-view</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-view-freemarker</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-view-jsp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-view-velocity</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-view-thymeleaf</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-view-enjoy</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-view-aifei-enjoy</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-view-beetl</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud-gateway</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud-eventplus</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud-tracing</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud-metrics</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud-telemetry</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-nami</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-channel-http-okhttp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-channel-http-hutool</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-channel-http</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-channel-socketd</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-fastjson</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-fastjson2</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-snack3</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-snack4</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-jackson</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+			<dependency>
+				<groupId>org.mutantcat.justsimple</groupId>
+				<artifactId>justsimple-coder-gson</artifactId>
+				<version>${justsimple.version}</version>
+			</dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-hessian</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-fury</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-kryo</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-protostuff</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-coder-abc</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-lib</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-web</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-test</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-test-junit4</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-test-junit5</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <!-- tool:: begin -->
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-configuration-processor</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+            <!-- tool:: end -->
+
+            <!-- justsimple-integration:: begin -->
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>seata-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>captcha-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jap-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jap-ids-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>liteflow-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easy-trans-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>beetlsql-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>wood-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>bean-searcher-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>sqltoy-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>luffy-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-sqlhelper-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-pagehelper-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-tkmapper-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-plus-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-plus-extension-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-flex-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>activerecord-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>hibernate-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>cron4j-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>quartz-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>powerjob-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>dubbo-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>dubbo3-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>graphql-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>feign-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>forest-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>hasor-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>dbvisitor-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>sureness-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>sa-token-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>sa-token-snack4</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>sa-token-dao-redisson-jackson</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>redisson-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>lettuce-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>pulsar2-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>drools-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easypoi-web-solon</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easypoi-wps-solon</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easypoi-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>simplejavamail-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>sms4j-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>orika-solon-plugin</artifactId>
+                <version>${justsimple-integration.version}</version>
+            </dependency>
+
+            <!-- justsimple-integration:: end -->
+
+            <!-- justsimple-cloud:: begin -->
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>local-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>consul-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>grpc-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>thrift-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>aliyun-oss-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>aws-s3-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>file-s3-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>fastdfs-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>qiniu-kodo-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>minio-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>minio7-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nacos-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nacos2-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nacos3-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>polaris-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>water-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>kubernetes-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jmdns-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jedis-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>activemq-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>folkmq-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>rabbitmq-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>rocketmq-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>rocketmq5-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>aliyun-ons-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mqtt-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mqtt5-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>pulsar-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>guava-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>sentinel-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>snowflake-id-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>zookeeper-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>etcd-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>kafka-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>semaphore-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>resilience4j-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>xxl-job-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>powerjob-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>quartz-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>opentracing-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jaeger-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>zipkin-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>opentelemetry-solon-cloud-plugin</artifactId>
+                <version>${justsimple-cloud.version}</version>
+            </dependency>
+
+            <!-- justsimple-cloud:: end -->
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-swagger2-knife4j</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-openapi2-knife4j</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mutantcat.justsimple</groupId>
+                <artifactId>justsimple-openapi3-knife4j</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-admin-client</artifactId>
+                <version>${justsimple-admin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-admin-server</artifactId>
+                <version>${justsimple-admin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-admin-server-ui</artifactId>
+                <version>${justsimple-admin.version}</version>
+            </dependency>
+
+
+            <!-- //////////// servlet ////////////  -->
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>${asm.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.fusesource.jansi</groupId>
+                <artifactId>jansi</artifactId>
+                <version>${jansi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+
+            <!-- dromara plugins:: begin -->
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>bee-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>drools-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>job-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>orika-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>captcha-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>easypoi-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>mapstruct-plus-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+
+            <!-- dromara plugins:: end -->
+
+
+            <!-- old plugins:: start -->
+            <!-- old::boot -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-jdkhttp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-smarthttp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-vertx</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-jetty</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-jetty-add-jsp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-jetty-add-websocket</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-undertow</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-undertow-add-jsp</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-websocket</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-websocket-netty</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-socketd</artifactId>
+                <version>${justsimple.version}</version>
+            </dependency>
+
+
+            <!-- jakarta plugins:: start -->
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-undertow-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-undertow-add-jsp-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-tomcat-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-tomcat-add-jsp-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-tomcat-add-websocket-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-jetty-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-jetty-add-jsp-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-server-jetty-add-websocket-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-view-jsp-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-web-servlet-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-web-webservices-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-logging-logback-jakarta</artifactId>
+                <version>${justsimple-java17.version}</version>
+            </dependency>
+
+            <!-- jakarta plugins:: end -->
+        </dependencies>
+    </dependencyManagement>
+
+
+    <profiles>
+        <profile>
+            <id>sonatype-oss-release</id>
+            <build>
+                <plugins>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.7</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                    <!-- Source -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <configuration>
+                            <attach>true</attach>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.11.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <additionalOptions>-Xdoclint:none</additionalOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.7.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>oss</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>aot</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.mutantcat.justsimple</groupId>
+                        <artifactId>justsimple-maven-plugin</artifactId>
+                        <version>${justsimple.version}</version>
+                        <executions>
+                            <execution>
+                                <id>process-aot</id>
+                                <goals>
+                                    <goal>process-aot</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.mutantcat.justsimple</groupId>
+                    <artifactId>justsimple-aot</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.mutantcat.justsimple</groupId>
+                        <artifactId>justsimple-maven-plugin</artifactId>
+                        <version>${justsimple.version}</version>
+                        <executions>
+                            <execution>
+                                <id>process-aot</id>
+                                <goals>
+                                    <goal>process-aot</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>${graalvm.buildtools.version}</version>
+                        <!-- 使用graalvm提供的可达性元数据，很多第三方库就直接可以构建成可执行文件了 -->
+                        <configuration>
+                            <metadataRepository>
+                                <enabled>true</enabled>
+                            </metadataRepository>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>add-reachability-metadata</id>
+                                <goals>
+                                    <goal>add-reachability-metadata</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.mutantcat.justsimple</groupId>
+                    <artifactId>justsimple-aot</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.mutantcat.justsimple</groupId>
+                    <artifactId>justsimple-maven-plugin</artifactId>
+                    <version>${justsimple.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler.version}</version>
+                    <configuration>
+                        <compilerArgument>-parameters</compilerArgument>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                        <encoding>${maven.compiler.encoding}</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven-assembly.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven-war.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <version>${graalvm.buildtools.version}</version>
+                    <!-- 使用graalvm提供的可达性元数据，很多第三方库就直接可以构建成可执行文件了 -->
+                    <configuration>
+                        <metadataRepository>
+                            <enabled>true</enabled>
+                        </metadataRepository>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>add-reachability-metadata</id>
+                            <goals>
+                                <goal>add-reachability-metadata</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

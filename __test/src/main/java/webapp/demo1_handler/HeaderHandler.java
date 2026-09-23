@@ -1,0 +1,37 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package webapp.demo1_handler;
+
+import org.mutantcat.justsimple.annotation.Managed;
+import org.mutantcat.justsimple.annotation.Mapping;
+import org.mutantcat.justsimple.core.handle.Context;
+import org.mutantcat.justsimple.core.handle.Handler;
+
+import java.nio.charset.StandardCharsets;
+
+/**
+ * 实现简单的 mvc 效果
+ * */
+@Mapping("/demo1/header/*")
+@Managed
+public class HeaderHandler implements Handler {
+    @Override
+    public void handle(Context cxt) throws Throwable {
+        byte[] bytes = "Hello world!".getBytes(StandardCharsets.UTF_8);
+        cxt.contentLength(bytes.length);
+        cxt.output(bytes);
+    }
+}

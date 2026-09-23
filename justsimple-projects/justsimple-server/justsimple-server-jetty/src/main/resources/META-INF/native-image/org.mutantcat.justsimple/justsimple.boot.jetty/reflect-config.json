@@ -1,0 +1,10 @@
+[
+  {
+    "name": "org.mutantcat.justsimple.server.jetty.http.JtHttpContextServletHandler",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.mutantcat.justsimple.server.jetty.websocket.WebSocketListenerImpl",
+    "allDeclaredConstructors": true
+  }
+]

@@ -1,0 +1,59 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.core.runtime;
+
+import org.mutantcat.justsimple.core.util.ClassUtil;
+import org.mutantcat.justsimple.core.util.Reflection;
+import org.mutantcat.justsimple.core.util.Scanner;
+import org.mutantcat.justsimple.lang.Internal;
+
+import java.io.File;
+
+/**
+ * 运行时服务
+ *
+ * @author noear
+ * @since 3.7
+ */
+@Internal
+public class RuntimeService {
+    private static RuntimeService singleton;
+
+    static {
+        //（静态扩展约定：org.mutantcat.justsimple.extend.impl.XxxxExt）
+        singleton = ClassUtil.tryInstance("org.mutantcat.justsimple.extend.impl.RuntimeServiceExt");
+
+        if (singleton == null) {
+            singleton = new RuntimeService();
+        }
+    }
+
+    public static RuntimeService singleton() {
+        return singleton;
+    }
+
+    public Reflection createReflection() {
+        return new Reflection();
+    }
+
+    public Scanner createScanner() {
+        return new Scanner();
+    }
+
+    public File createClassOutputFile(String fileName) {
+        throw new UnsupportedOperationException();
+    }
+}

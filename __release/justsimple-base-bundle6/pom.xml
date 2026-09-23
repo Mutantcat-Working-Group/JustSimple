@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mutantcat.justsimple</groupId>
+        <artifactId>justsimple-parent</artifactId>
+        <version>4.1.1-SNAPSHOT</version>
+        <relativePath>../../justsimple-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>justsimple-base-bundle6</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-grizzly</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-grizzly-add-websocket</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-jdkhttp</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-smarthttp</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-feathttp</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-jetty</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-jetty-add-jsp</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-jetty-add-websocket</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-netahttp</module>
+
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-tomcat</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-tomcat-add-jsp</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-tomcat-add-websocket</module>
+
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-undertow</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-undertow-add-jsp</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-vertx</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-websocket</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-websocket-netty</module>
+        <module>../../justsimple-projects/justsimple-server/justsimple-server-socketd</module>
+
+    </modules>
+</project>

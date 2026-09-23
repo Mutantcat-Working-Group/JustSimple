@@ -1,0 +1,159 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.server.websocket;
+
+import org.java_websocket.framing.PongFrame;
+import org.mutantcat.justsimple.server.util.DecodeUtils;
+import org.mutantcat.justsimple.net.websocket.WebSocketTimeoutBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+
+/**
+ * @author noear
+ * @since 2.6
+ */
+public class WebSocketImpl extends WebSocketTimeoutBase {
+    private static final Logger log = LoggerFactory.getLogger(WebSocketImpl.class);
+    private final org.java_websocket.WebSocket real;
+
+    public WebSocketImpl(org.java_websocket.WebSocket real) {
+        this.real = real;
+        String uri = DecodeUtils.rinseUri(real.getResourceDescriptor());
+
+        this.init(URI.create(uri));
+    }
+
+    @Override
+    public boolean isValid() {
+        return isClosed() == false && real.isOpen();
+    }
+
+    @Override
+    public boolean isSecure() {
+        return real.hasSSLSupport();
+    }
+
+    @Override
+    public InetSocketAddress remoteAddress() {
+        return real.getRemoteSocketAddress();
+    }
+
+    @Override
+    public InetSocketAddress localAddress() {
+        return real.getLocalSocketAddress();
+    }
+
+
+    @Override
+    public Future<Void> send(String text) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.send(text);
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
+    }
+
+    @Override
+    public Future<Void> send(ByteBuffer binary) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.send(binary);
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPing() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.sendPing();
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.sendFrame(new PongFrame());
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
+    }
+
+    @Override
+    public void close() {
+        super.close();
+
+        if (real.isOpen()) {
+            try {
+                real.close();
+            } catch (Throwable ignore) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Close failure: {}", ignore.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void close(int code, String reason) {
+        super.close(code, reason);
+
+        if (real.isOpen()) {
+            try {
+                real.close(code, reason);
+            } catch (Throwable ignore) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Close failure: {}", ignore.getMessage());
+                }
+            }
+        }
+    }
+}

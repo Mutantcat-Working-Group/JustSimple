@@ -1,0 +1,174 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.core;
+
+import org.mutantcat.justsimple.core.handle.*;
+import org.mutantcat.justsimple.core.util.ClassUtil;
+import org.mutantcat.justsimple.core.util.JavaUtil;
+import org.mutantcat.justsimple.util.ScopeLocalJdk8;
+import org.mutantcat.justsimple.util.ScopeLocal;
+
+import java.lang.reflect.AnnotatedElement;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+/**
+ * 工厂管理器（后续会迁入更多的工厂管理）
+ *
+ * @author noear
+ * @since 2.5
+ */
+public final class FactoryManager {
+    private static final FactoryManager global = new FactoryManager();
+
+    public static FactoryManager getGlobal() {
+        return global;
+    }
+
+
+    private ActionLoaderFactory actionLoaderFactory;
+    private LoadBalance.Factory loadBalanceFactory = (g, s) -> null;
+    private ScopeLocal.Factory scopeLocalFactory;
+
+    public FactoryManager() {
+        actionLoaderFactory = ClassUtil.tryInstance("org.mutantcat.justsimple.extend.impl.ActionLoaderFactoryExt");
+
+        if (JavaUtil.JAVA_MAJOR_VERSION >= 25) {
+            // >=25 则自动加载；<25 手动配置
+            scopeLocalFactory = ClassUtil.tryInstance("org.mutantcat.justsimple.extend.impl.ScopeLocalFactoryExt");
+        }
+
+        if (scopeLocalFactory == null) {
+            scopeLocalFactory = ScopeLocalJdk8::new;
+        }
+    }
+
+    /// ///////
+    //
+    // threadLocalFactory
+    //
+    private BiFunction<Class<?>, Boolean, ThreadLocal> threadLocalFactory = (applyFor, inheritance0) -> {
+        if (inheritance0) {
+            return new InheritableThreadLocal<>();
+        } else {
+            return new ThreadLocal<>();
+        }
+    };
+
+    /**
+     * 配置线程状态管理工厂
+     */
+    public void threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> factory) {
+        if (factory != null) {
+            threadLocalFactory = factory;
+        }
+    }
+
+    /**
+     * 创建线程状态
+     *
+     * @param applyFor     申请应用的类
+     * @param inheritance0 原始可继随性
+     */
+    public <T> ThreadLocal<T> newThreadLocal(Class<?> applyFor, boolean inheritance0) {
+        return threadLocalFactory.apply(applyFor, inheritance0);
+    }
+
+    /// ///////
+    //
+    // scopeLocalFactory 对接
+    //
+
+    public void scopeLocalFactory(ScopeLocal.Factory factory) {
+        if (factory != null) {
+            this.scopeLocalFactory = factory;
+        }
+    }
+
+    public <T> ScopeLocal<T> newScopeLocal(Class<?> applyFor) {
+        return scopeLocalFactory.create(applyFor);
+    }
+
+    /// ///////
+    //
+    // loadBalanceFactory 对接
+    //
+
+
+    /**
+     * 配置负载工厂
+     */
+    public void loadBalanceFactory(LoadBalance.Factory factory) {
+        if (factory != null) {
+            loadBalanceFactory = factory;
+        }
+    }
+
+    /**
+     * 创建负载
+     */
+    public LoadBalance newLoadBalance(String group, String service) {
+        return loadBalanceFactory.create(group, service);
+    }
+
+
+    /// ///////
+    //
+    // loadBalanceFactory 对接
+    //
+
+
+    public ActionLoaderFactory actionLoaderFactory() {
+        if (actionLoaderFactory == null) {
+            throw new IllegalStateException("The 'justsimple-handle' plugin is missing");
+        }
+
+        return actionLoaderFactory;
+    }
+
+    public void actionLoaderFactory(ActionLoaderFactory factory) {
+        if (factory != null) {
+            this.actionLoaderFactory = factory;
+        }
+    }
+
+    /**
+     * 创建动作加载器
+     */
+    public ActionLoader createLoader(BeanWrap wrap) {
+        return createLoader(wrap, wrap.remoting());
+    }
+
+    /**
+     * 创建动作加载器
+     */
+    public ActionLoader createLoader(BeanWrap wrap, boolean remoting) {
+        return actionLoaderFactory().createLoader(wrap, remoting);
+    }
+
+    /**
+     * 分析动作参数
+     */
+    public void resolveActionParamTry(ActionParam vo, AnnotatedElement element) {
+        if (actionLoaderFactory != null) {
+            actionLoaderFactory.resolveActionParam(vo, element);
+        }
+    }
+
+    public EntityConverter entityConverterDefault() {
+        return actionLoaderFactory().getEntityConverterDefault();
+    }
+}

@@ -1,0 +1,109 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.gradle.plugin;
+
+import org.gradle.api.Action;
+import org.gradle.api.Plugin;
+import org.gradle.api.Project;
+import org.gradle.api.Transformer;
+import org.gradle.api.artifacts.ConfigurationContainer;
+import org.gradle.api.file.FileCollection;
+import org.gradle.api.plugins.BasePlugin;
+import org.gradle.api.plugins.JavaPluginExtension;
+import org.gradle.api.plugins.WarPlugin;
+import org.gradle.api.tasks.SourceSet;
+import org.gradle.api.tasks.SourceSetContainer;
+import org.gradle.api.tasks.TaskProvider;
+import org.gradle.api.tasks.bundling.War;
+import org.jetbrains.annotations.NotNull;
+import org.mutantcat.justsimple.gradle.tasks.bundling.JustSimpleWar;
+
+import java.util.Objects;
+import java.util.concurrent.Callable;
+
+/**
+ * {@link Action} that is executed in response to the {@link WarPlugin} being applied.
+ *
+ * @author Andy Wilkinson
+ * @author Scott Frederick
+ */
+class WarPluginAction implements PluginApplicationAction {
+
+    private final SinglePublishedArtifact singlePublishedArtifact;
+
+    WarPluginAction(SinglePublishedArtifact artifact) {
+        this.singlePublishedArtifact = artifact;
+    }
+
+    @Override
+    public Class<? extends Plugin<? extends Project>> getPluginClass() {
+        return WarPlugin.class;
+    }
+
+    @Override
+    public void execute(@NotNull Project project) {
+        classifyWarTask(project);
+        TaskProvider<JustSimpleWar> bootWar = configureJustSimpleWarTask(project);
+        configureArtifactPublication(bootWar);
+    }
+
+    private void classifyWarTask(Project project) {
+        project.getTasks().named(WarPlugin.WAR_TASK_NAME, War.class)
+                .configure((war) -> war.getArchiveClassifier().convention("plain"));
+    }
+
+    private TaskProvider<JustSimpleWar> configureJustSimpleWarTask(Project project) {
+        SourceSet mainSourceSet = project.getExtensions().getByType(SourceSetContainer.class)
+                .getByName(SourceSet.MAIN_SOURCE_SET_NAME);
+
+        Callable<FileCollection> classpath = mainSourceSet::getRuntimeClasspath;
+        TaskProvider<ResolveMainClassName> resolveMainClassName = project.getTasks()
+                .named(JustSimplePlugin.RESOLVE_MAIN_CLASS_NAME_TASK_NAME, ResolveMainClassName.class);
+
+        TaskProvider<JustSimpleWar> bootWarProvider = project.getTasks().register(JustSimplePlugin.JUSTSIMPLE_WAR_TASK_NAME,
+                JustSimpleWar.class, (bootWar) -> {
+                    bootWar.setGroup(BasePlugin.BUILD_GROUP);
+                    bootWar.setDescription("Assembles an executable war archive containing webapp"
+                            + " content, and the main classes and their dependencies.");
+                    bootWar.providedClasspath(providedRuntimeConfiguration(project));
+                    bootWar.setClasspath(classpath);
+
+                    bootWar.getMainClass()
+                            .convention(resolveMainClassName.flatMap((resolver) -> resolveMainClassName.get().readMainClassName()));
+
+                    bootWar.getTargetJavaVersion()
+                            .set(project.provider(() -> javaPluginExtension(project).getTargetCompatibility()));
+                });
+
+        bootWarProvider.map((Transformer<Object, JustSimpleWar>) war -> Objects.requireNonNull(war.getClasspath()));
+
+        return bootWarProvider;
+    }
+
+    private FileCollection providedRuntimeConfiguration(Project project) {
+        ConfigurationContainer configurations = project.getConfigurations();
+        return configurations.getByName(WarPlugin.PROVIDED_RUNTIME_CONFIGURATION_NAME);
+    }
+
+    private void configureArtifactPublication(TaskProvider<JustSimpleWar> bootWar) {
+        this.singlePublishedArtifact.addWarCandidate(bootWar);
+    }
+
+    private JavaPluginExtension javaPluginExtension(Project project) {
+        return project.getExtensions().getByType(JavaPluginExtension.class);
+    }
+
+}

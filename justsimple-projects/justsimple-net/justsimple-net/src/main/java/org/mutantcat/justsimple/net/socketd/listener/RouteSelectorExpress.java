@@ -1,0 +1,53 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.net.socketd.listener;
+
+import org.noear.socketd.transport.core.Listener;
+import org.noear.socketd.transport.core.listener.RouteSelector;
+import org.mutantcat.justsimple.core.handle.MethodType;
+import org.mutantcat.justsimple.core.route.RoutingTable;
+import org.mutantcat.justsimple.core.route.RoutingTableDefault;
+
+/**
+ * 表达式路由器
+ *
+ * @author noear
+ * @since 2.0
+ */
+public class RouteSelectorExpress implements RouteSelector<Listener> {
+
+    private final RoutingTable<Listener> inner = new RoutingTableDefault<>();
+
+    @Override
+    public Listener select(String path) {
+        return inner.matchOne(path, null, MethodType.SOCKET);
+    }
+
+    @Override
+    public void put(String path, Listener listener) {
+        inner.add(path, MethodType.SOCKET, 0, null, listener);
+    }
+
+    @Override
+    public void remove(String path) {
+        inner.remove(path);
+    }
+
+    @Override
+    public int size() {
+        return inner.count();
+    }
+}

@@ -1,0 +1,136 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.server.websocket.netty;
+
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.*;
+import org.mutantcat.justsimple.server.util.DecodeUtils;
+import org.mutantcat.justsimple.net.websocket.WebSocketTimeoutBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.concurrent.Future;
+
+/**
+ * @author noear
+ * @since 2.6
+ */
+public class WebSocketImpl extends WebSocketTimeoutBase {
+    private static final Logger log = LoggerFactory.getLogger(WebSocketImpl.class);
+    private ChannelHandlerContext real;
+
+    public WebSocketImpl(ChannelHandlerContext real) {
+        this.real = real;
+        String uri = DecodeUtils.rinseUri(real.attr(NettyWsServerHandler.ResourceDescriptorKey).get());
+
+        this.init(URI.create(uri));
+    }
+
+    @Override
+    public boolean isValid() {
+        return isClosed() == false && real.channel().isOpen();
+    }
+
+    @Override
+    public boolean isSecure() {
+        return false;
+    }
+
+    @Override
+    public InetSocketAddress remoteAddress() {
+        return (InetSocketAddress) real.channel().remoteAddress();
+    }
+
+    @Override
+    public InetSocketAddress localAddress() {
+        return (InetSocketAddress) real.channel().localAddress();
+    }
+
+
+    @Override
+    public Future<Void> send(String text) {
+        try {
+            return real.writeAndFlush(new TextWebSocketFrame(text));
+        } finally {
+            onSend();
+        }
+    }
+
+    @Override
+    public Future<Void> send(ByteBuffer binary) {
+        try {
+            return real.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(binary)));
+        } finally {
+            onSend();
+        }
+    }
+
+    @Override
+    public Future<Void> sendPing() {
+        try {
+            return real.writeAndFlush(new PingWebSocketFrame());
+        } finally {
+            onSend();
+        }
+    }
+
+    @Override
+    public Future<Void> sendPong() {
+        try {
+            return real.writeAndFlush(new PongWebSocketFrame());
+        } finally {
+            onSend();
+        }
+    }
+
+    @Override
+    public void close() {
+        super.close();
+
+        if (real.channel().isActive()) {
+            real.close().addListener((ChannelFutureListener) future -> {
+                if (false == future.isSuccess()) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Close failure: {}", future.cause().getMessage());
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void close(int code, String reason) {
+        super.close(code, reason);
+
+        if (real.channel().isActive()) {
+            CloseWebSocketFrame closeFrame = new CloseWebSocketFrame(code, reason);
+            real.channel().writeAndFlush(closeFrame)
+                    .addListener(ChannelFutureListener.CLOSE)
+                    .addListener((ChannelFutureListener) future -> {
+                        if (false == future.isSuccess()) {
+                            if (log.isDebugEnabled()) {
+                                log.debug("Close failure: {}", future.cause().getMessage());
+                            }
+                        }
+                    });
+        }
+    }
+}

@@ -1,0 +1,140 @@
+### 纪年
+
+* v0: 2018 ~ 2019 (2y)
+* v1: 2020 ~ 2022 (3y)
+* v2: 2023 ~ 2024 (2y)
+* v3: 2024 ~ 2026 (1.5y)
+* v4: 2026 ~ 
+
+### v3.x 升到 v4.x 提醒
+
+* 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
+* 提醒2：有使用弃用接口的。建议先升级到 3.10.7；替换弃用代码后，再升级到 4.0.0
+
+
+### 待议
+* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
+* 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
+* 调整 justsimple-docs-openapi2 合并 justsimple-docs-openapi2-javadoc ???
+* 
+* 添加 序列化安全名单接口?
+
+* 优化 justsimple-flow （有包含结构的）网关的流入流出架构，使不再需要记录栈和计数器???
+* 添加 Plugin postStart 事件???
+* 调整 Plugin 统一交给 AppContext 管理（之前由 JustSimpleApp 或 PluginPackage 管理）？？
+
+### 4.1.1
+
+* 优化 justsimple 路由表排序策略：同层级路由按路径段从左到右的精确度排序
+* 调整 justsimple 移除 RoutingTable.matchMore 方法(没用到了)
+
+### 4.1.0
+
+* 新增 justsimple-ai-router 插件
+* 添加 justsimple-server `server.request.maxPartCount` 配置支持，并优化相关细节
+* 添加 justsimple-logging-log4j2 `justsimple.logging.appender.file.totalSizeCap` 配置支持
+* 优化 justsimple JustSimpleProps.syncArgsToSys 兼容性
+
+### 4.0.6
+
+* 优化 justsimple-web-sse SseEmitter 多处细节
+* 优化 justsimple-net-httputils 30x 跳转处理
+* 修复 nami-channel-http form 提交不支持实体的问题
+* 修复 justsimple-web-staticfiles 路径安全问题(GHSA-mmhm-jhrm-7xp9)
+* 修复 justsimple-serialization-kryo 类安全问题(GHSA-vf5p-h287-77qx)
+* feat 调整 HttpServer 默认关闭 bannerEnabled；调整 websocket 日志级别
+* eggg 升为 1.1.5
+* redisx 升为 1.8.6
+* smarthttp 升为 2.5.21
+
+### v4.0.5
+
+* 添加 justsimple-net WebSocket:sendPing, sendPong 方法（及配套适配）
+* 添加 justsimple-net-httputils 默认 User-Agent（justsimple-http/<version>），支持 HttpConfiguration.setUserAgent() 全局配置或置 null 禁用
+* 新增 justsimple-serialization-fory 插件（原 justsimple-serialization-fury 标为弃用）
+* 优化 justsimple MultiMap.from 方法，兼容 picocli 的解析策略
+* 调整 justsimple-server-feathttp 改为源码导入（发布包更小）
+* 修复 justsimple-handle AbstractEntityReader:doReadArgument StatusException 传递问题
+* feat 升为 2.3.1，取消 server header 默认输出，日志改为 slf4j，移除 System.out 日志
+* eggg 升为 1.1.4
+* snack4 升为 4.0.59
+* fastjson 升为 1.2.84
+* fastjson2 升为 2.0.64
+* smartsocket 升为 2.1.3
+* smarthttp 升为 2.5.20
+
+### v4.0.4
+
+* 添加 justsimple Context:realHost()（支持反向代理场景下获取真实 Host）
+* 添加 justsimple RunHolder 线程池配置支持（justsimple.task.execution.pool.size / justsimple.task.scheduling.pool.size）
+* 添加 justsimple-data LazyConnectionDataSourceProxy 类（可选使用）
+* 优化 justsimple Props 属性键处理：取消 `xxx-yyy` 物理双写，改为读时 kebab/camel 宽松映射
+* 优化 justsimple-data 数据库事务连接配置，仅在值变化时设置自动提交和只读模式
+* 优化 nami-channel-http HttpChannel 响应关闭处理
+* 优化 justsimple-net-httputils 适配，增加更多全局配置
+* snack4 升为 4.0.56
+
+### v4.0.3
+
+* 新增 justsimple-ai-loop
+* 新增 justsimple-ai-talent-code 才能插件（从 justsimple-ai-harness 分离出来）
+* 添加 justsimple ScopeLocal.Factory 接口
+* 添加 justsimple ScopeLocalJdk25 自动加载机制
+* 添加 justsimple-lib justsimple-java25 包（作自动加载用）
+* 调整 justsimple 临时恢复 BeanContainer.wrapPublish
+* 调整 justsimple 临时恢复 ResourceUtil.scanClasses
+
+
+### v4.0.2
+
+* 新增 justsimple-server-feathttp 插件（试用）
+* 调整 justsimple 暂时恢复 PathAnalyzer 类
+* 调整 justsimple 暂时恢复 ResourceUtil.scanClasses 方法
+* 优化 justsimple-server 配置大小支持全单位，增加gb和b
+* snack4 升为 4.0.53
+
+### v4.0.0  (2026-05-26)
+
+* 新增 mcp-json-jackson2
+* 新增 justsimple-view-aifei-enjoy 插件
+* 新增 justsimple-cache-caffeine3 插件
+* 新增 justsimple-ai-talent-gateway（由 justsimple-ai-skill-restapi 和 justsimple-ai-skill-toolgateway 合并而来）
+* 新增 justsimple-ai-talent-mount 才能插件
+* 添加 justsimple `ScopeLocal.getOr(Supplier)` 方法
+* 添加 justsimple `AppContext.resolvePlaceholders` 方法
+* 添加 justsimple-config-snack4 开放属性序列化的 Options 定制支持
+* 优化 justsimple-server-xxx MultipartUtil 字段处理 RunUtil.runAndTry(part::delete) 尝试删除
+* 调整 justsimple-cache-caffeine 增加 md5 控制、默认时间、缓存头控制支持
+* 调整 justsimple-cache-xxx enableMd5key 默认为 false 
+* 调整 justsimple Utils.annoAlias 标为弃用（由 Utils.valueOr 替代）
+* 移除 justsimple-expression StandardContext 类
+* 修复 justsimple-serialization-snack4 Snack4StringSerializer.name 为 “snack4-json”
+* eggg 升为 1.1.3
+* snack4 升为 4.0.52
+* liquor 升为 1.6.8
+* socketd 升为 2.6.0
+* folkmq 升为 1.8.0
+* asm 升为 9.10
+* lombok 升为 1.18.46
+* slf4j 升为 2.0.18
+* log4j 升为 2.26.0
+* junit5 升为 5.14.4
+* hutool 升为 5.8.44
+* snakeyaml 升为 2.6
+* fastjson2 升为 2.0.62
+* jackson2 升为 2.21.4
+* gson 升为 2.14.0
+* redisson 升为 3.52.0
+* lettuce 升为 6.8.2.RELEASE
+* kafka 升为 3.9.2
+* reactor-netty-http 升为 1.3.5
+* netty 升为 4.1.134.Final
+* smartsocket 升为 2.0.0
+* smarthttp 升为 2.5.19
+* vert.x 升为 4.5.27
+* tomcat 升为 9.0.118
+* undertow 升为 2.2.39.Final
+* rocketmq5 升为 5.2.0
+* nacos3 升为 3.2.1
+* swagger 升为 1.6.16
+* swagger2 升为 2.2.50

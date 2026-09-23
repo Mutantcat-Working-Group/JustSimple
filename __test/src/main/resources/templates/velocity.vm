@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title}</title>
+</head>
+<body>
+velocity::${msg}；i18n::${i18n.get("login.title")}
+
+1
+</body>
+</html>

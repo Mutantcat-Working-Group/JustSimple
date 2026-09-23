@@ -1,0 +1,55 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.data.rx.sql;
+
+
+import org.mutantcat.justsimple.core.util.RankEntity;
+import org.mutantcat.justsimple.data.rx.sql.intercept.RxSqlCommandInterceptor;
+import org.mutantcat.justsimple.data.rx.sql.intercept.RxSqlCallable;
+import org.mutantcat.justsimple.data.rx.sql.intercept.RxSqlCommandInvocation;
+import org.reactivestreams.Publisher;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Sql 配置类
+ *
+ * @author noear
+ * @since 3.0
+ */
+public class RxSqlConfiguration {
+    private static List<RankEntity<RxSqlCommandInterceptor>> interceptorList = new ArrayList<>();
+
+    /**
+     * 添加拦截器
+     */
+    public static void addInterceptor(RxSqlCommandInterceptor interceptor, int index) {
+        interceptorList.add(new RankEntity<>(interceptor, index));
+        Collections.sort(interceptorList);
+    }
+
+    /**
+     * 执行拦截
+     *
+     * @param command  命令
+     * @param callable 可调用的
+     */
+    public static Publisher doIntercept(RxSqlCommand command, RxSqlCallable callable) {
+        return new RxSqlCommandInvocation(command, interceptorList, callable).invoke();
+    }
+}

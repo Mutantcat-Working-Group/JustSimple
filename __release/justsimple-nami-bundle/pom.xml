@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mutantcat.justsimple</groupId>
+        <artifactId>justsimple-parent</artifactId>
+        <version>4.1.1-SNAPSHOT</version>
+        <relativePath>../../justsimple-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>justsimple-nami-bundle</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami</module>
+
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-channel-http-okhttp</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-channel-http-hutool</module>
+
+
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-channel-http</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-channel-socketd</module>
+
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-snack3</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-snack4</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-fastjson</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-fastjson2</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-jackson</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-gson</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-fury</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-hessian</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-protostuff</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-kryo</module>
+        <module>../../justsimple-projects/justsimple-nami/justsimple-nami-coder-abc</module>
+    </modules>
+</project>

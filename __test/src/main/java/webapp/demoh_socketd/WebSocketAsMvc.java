@@ -1,0 +1,47 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package webapp.demoh_socketd;
+
+import org.mutantcat.justsimple.nami.channel.socketd.SocketdProxy;
+import org.noear.socketd.transport.core.impl.ConfigDefault;
+import org.mutantcat.justsimple.net.annotation.ServerEndpoint;
+import org.mutantcat.justsimple.net.websocket.WebSocket;
+import org.mutantcat.justsimple.net.websocket.socketd.ToSocketdWebSocketListener;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+/**
+ * @author noear 2024/5/26 created
+ */
+@ServerEndpoint("/demoh/rpc/**")
+public class WebSocketAsMvc extends ToSocketdWebSocketListener {
+    public WebSocketAsMvc() {
+        super(new ConfigDefault(false), SocketdProxy.socketdToHandler);
+    }
+
+    @Override
+    public void onOpen(WebSocket socket) {
+        System.out.println("[PROBE] WebSocketAsMvc.onOpen path=" + socket.path());
+        super.onOpen(socket);
+    }
+
+    @Override
+    public void onMessage(WebSocket socket, ByteBuffer binary) throws IOException {
+        System.out.println("[PROBE] WebSocketAsMvc.onMessage bytes=" + binary.remaining());
+        super.onMessage(socket, binary);
+    }
+}

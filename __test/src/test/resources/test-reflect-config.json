@@ -1,0 +1,47 @@
+[
+  {
+    "name": "org.mutantcat.justsimple.JustSimple",
+    "condition": {
+      "typeReachable": "org.mutantcat.justsimple.JustSimple"
+    },
+    "methods": [
+      {
+        "name": "version",
+        "parameterTypes": []
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ],
+    "fields": [
+      {
+        "name": "app"
+      },
+      {
+        "name": "appMain"
+      },
+      {
+        "name": "encoding"
+      },
+      {
+        "name": "location"
+      },
+      {
+        "name": "log"
+      }
+    ],
+    "allPublicFields": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "features.aot.NativeDTO$NativeDTO2",
+    "fields": [
+      {
+        "name": "subName"
+      }
+    ]
+  }
+]

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>__release</artifactId>
+    <version>dev</version>
+    <packaging>pom</packaging>
+
+    <name>__release</name>
+    <description>Java project for justsimple</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <modules>
+        <module>../justsimple</module>
+        <module>../justsimple-parent</module>
+
+        <module>justsimple-nami-bundle</module>
+
+        <module>justsimple-base-bundle1</module>
+        <module>justsimple-base-bundle2</module>
+        <module>justsimple-base-bundle3</module>
+        <module>justsimple-base-bundle4</module>
+        <module>justsimple-base-bundle5</module>
+        <module>justsimple-base-bundle6</module>
+
+        <module>justsimple-shortcuts-bundle</module>
+    </modules>
+</project>

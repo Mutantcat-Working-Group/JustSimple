@@ -1,0 +1,99 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.core.util;
+
+import org.mutantcat.justsimple.core.AppClassLoader;
+import org.mutantcat.justsimple.core.runtime.RuntimeService;
+
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+/**
+ * 资源扫描工具（用于扫描插件配置等资源...）
+ *
+ * @author noear
+ * @author 馒头虫/瓢虫
+ * @since 1.0
+ * */
+public class ScanUtil {
+    static Scanner global;
+
+    static {
+        //（静态扩展约定：org.mutantcat.justsimple.extend.impl.XxxxExt）
+        global = RuntimeService.singleton().createScanner();
+    }
+
+    /**
+     * 扫描路径下的的资源（path 扫描路径）
+     *
+     * @param path   路径
+     * @param filter 过滤条件
+     */
+    public static Set<String> scan(String path, Predicate<String> filter) {
+        return scan(AppClassLoader.global(), path, filter);
+    }
+
+    /**
+     * 扫描路径下的的资源（path 扫描路径）
+     *
+     * @param classLoader 类加载器
+     * @param path        路径
+     * @param filter      过滤条件
+     */
+    public static Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
+        Set<String> set = new LinkedHashSet<>();
+        global.scan(classLoader, path, false, filter, set::add);
+        return set;
+    }
+
+    /**
+     * 扫描路径下的的资源（path 扫描路径）
+     *
+     * @param classLoader 类加载器
+     * @param path        路径
+     * @param fileMode    文件模式
+     * @param filter      过滤条件
+     */
+    public static Set<String> scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter) {
+        Set<String> set = new LinkedHashSet<>();
+        global.scan(classLoader, path, fileMode, filter, set::add);
+        return set;
+    }
+
+    /**
+     * 扫描路径下的的资源（path 扫描路径），消费时注意去除
+     *
+     * @param classLoader 类加载器
+     * @param path        路径
+     * @param filter      过滤条件
+     */
+    public static void scan(ClassLoader classLoader, String path, Predicate<String> filter, Consumer<String> consumer) {
+        global.scan(classLoader, path, false, filter, consumer);
+    }
+
+    /**
+     * 扫描路径下的的资源（path 扫描路径），消费时注意去除
+     *
+     * @param classLoader 类加载器
+     * @param path        路径
+     * @param fileMode    文件模式
+     * @param filter      过滤条件
+     */
+    public static void scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter, Consumer<String> consumer) {
+        global.scan(classLoader, path, fileMode, filter, consumer);
+    }
+}

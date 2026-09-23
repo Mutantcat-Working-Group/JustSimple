@@ -1,0 +1,117 @@
+{
+  "properties": [
+    {
+      "name": "server.port",
+      "type": "java.lang.Integer",
+      "defaultValue": 8080,
+      "description": "服务端口"
+    },
+    {
+      "name": "server.host",
+      "type": "java.lang.String",
+      "defaultValue": "0.0.0.0",
+      "description": "服务主机"
+    },
+    {
+      "name": "server.wrapPort",
+      "type": "java.lang.Integer",
+      "defaultValue": 8080,
+      "description": "服务包装端口（通过容器运行时，且内外端口不一致时用）"
+    },
+    {
+      "name": "server.wrapHost",
+      "type": "java.lang.String",
+      "defaultValue": "0.0.0.0",
+      "description": "服务包装主机（通过容器运行时，且内外主机不一致时用）"
+    },
+    {
+      "name": "server.contextPath",
+      "type": "java.lang.String",
+      "description": "服务上下文路径"
+    },
+    {
+      "name": "server.request.maxBodySize",
+      "type": "java.lang.String",
+      "defaultValue": "2mb",
+      "description": "设定最大的请求包大小（或表单项的值大小）"
+    },
+    {
+      "name": "server.request.maxFileSize",
+      "type": "java.lang.String",
+      "defaultValue": "2mb",
+      "description": "设定最大的上传文件大小"
+    },
+    {
+      "name": "server.request.maxHeaderSize",
+      "type": "java.lang.String",
+      "defaultValue": "8kb",
+      "description": "设定最大的请求头大小"
+    },
+    {
+      "name": "server.request.fileSizeThreshold",
+      "type": "java.lang.String",
+      "defaultValue": "512kb",
+      "description": "设定上传文件大小阀值（小于走内存，大于走临时文件）"
+    },
+    {
+      "name": "server.request.useRawpath",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "设定使用原始路径"
+    },
+    {
+      "name": "server.request.encoding",
+      "type": "java.lang.String",
+      "defaultValue": "utf-8",
+      "description": "设定请求体编码"
+    },
+    {
+      "name": "server.response.encoding",
+      "type": "java.lang.String",
+      "defaultValue": "utf-8",
+      "description": "设定响应体编码"
+    },
+    {
+      "name": "server.session.timeout",
+      "type": "java.lang.Integer",
+      "defaultValue": 7200,
+      "description": "设定会话超时秒数（单位：秒）"
+    },
+    {
+      "name": "server.session.cookieName",
+      "type": "java.lang.String",
+      "description": "设定会话id的cookieName"
+    },
+    {
+      "name": "server.session.cookieDomain",
+      "type": "java.lang.String",
+      "description": "设定会话id的cookie域（默认为当前域名）"
+    },
+    {
+      "name": "server.session.cookieDomainAuto",
+      "type": "java.lang.String",
+      "defaultValue": true,
+      "description": "设定会话id的cookie域自动处理"
+    },
+    {
+      "name": "server.ssl.keyStore",
+      "type": "java.lang.String",
+      "description": "服务ssl证书（例：demo.jks 或 demo.pfx）"
+    },
+    {
+      "name": "server.ssl.keyPassword",
+      "type": "java.lang.String",
+      "description": "服务ssl证书密码"
+    },
+    {
+      "name": "server.ssl.keyStore",
+      "type": "java.lang.String",
+      "description": "服务ssl证书（例：demo.jks 或 demo.pfx）"
+    },
+    {
+      "name": "server.ssl.keyPassword",
+      "type": "java.lang.String",
+      "description": "服务ssl证书密码"
+    }
+  ]
+}

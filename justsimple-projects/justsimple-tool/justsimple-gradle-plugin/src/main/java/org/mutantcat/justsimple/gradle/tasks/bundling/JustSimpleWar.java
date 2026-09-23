@@ -1,0 +1,71 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mutantcat.justsimple.gradle.tasks.bundling;
+
+import org.gradle.api.Project;
+import org.gradle.api.file.DuplicatesStrategy;
+import org.gradle.api.file.FileCollection;
+import org.gradle.api.provider.Provider;
+import org.gradle.api.tasks.bundling.War;
+
+import java.util.Collections;
+
+public abstract class JustSimpleWar extends War implements JustSimpleArchive {
+
+    private final JustSimpleArchiveSupport support;
+
+    private final Provider<String> projectName;
+
+    private final Provider<Object> projectVersion;
+
+    private FileCollection providedClasspath;
+
+    public JustSimpleWar() {
+        this.support = new JustSimpleArchiveSupport();
+        setDuplicatesStrategy(DuplicatesStrategy.INCLUDE);
+
+        Project project = getProject();
+        this.projectName = project.provider(project::getName);
+        this.projectVersion = project.provider(project::getVersion);
+    }
+
+    @Override
+    public void copy() {
+        this.support.configureManifest(
+                getManifest(),
+                getMainClass().get(),
+                this.getTargetJavaVersion().get().toString(),
+                this.projectName.get(),
+                this.projectVersion.get()
+        );
+        
+        super.copy();
+    }
+
+    /**
+     * Adds files to the provided classpath to include in the {@code WEB-INF/lib-provided}
+     * directory of the war. The given {@code classpath} is evaluated as per
+     * {@link Project#files(Object...)}.
+     *
+     * @param classpath the additions to the classpath
+     */
+    public void providedClasspath(Object... classpath) {
+        FileCollection existingClasspath = this.providedClasspath;
+        this.providedClasspath = getProject()
+                .files((existingClasspath != null) ? existingClasspath : Collections.emptyList(), classpath);
+    }
+
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mutantcat.justsimple</groupId>
+        <artifactId>justsimple-parent</artifactId>
+        <version>4.1.1-SNAPSHOT</version>
+        <relativePath>../../justsimple-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.mutantcat.justsimple</groupId>
+    <artifactId>justsimple-base-bundle2</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../justsimple-projects/justsimple-data/justsimple-data</module>
+        <module>../../justsimple-projects/justsimple-data/justsimple-data-dynamicds</module>
+        <module>../../justsimple-projects/justsimple-data/justsimple-data-shardingds</module>
+<!--        <module>../../justsimple-projects/justsimple-data/justsimple-data-sqlink</module>-->
+        <module>../../justsimple-projects/justsimple-data/justsimple-data-sqlutils</module>
+
+        <module>../../justsimple-projects/justsimple-data/justsimple-cache</module>
+        <module>../../justsimple-projects/justsimple-data/justsimple-cache-caffeine</module>
+        <module>../../justsimple-projects/justsimple-data/justsimple-cache-jedis</module>
+        <module>../../justsimple-projects/justsimple-data/justsimple-cache-spymemcached</module>
+        <module>../../justsimple-projects/justsimple-data/justsimple-cache-redisson</module>
+
+        <module>../../justsimple-projects/justsimple-docs/justsimple-docs</module>
+        <module>../../justsimple-projects/justsimple-docs/justsimple-docs-openapi2</module>
+        <module>../../justsimple-projects/justsimple-docs/justsimple-docs-openapi2-javadoc</module>
+        <module>../../justsimple-projects/justsimple-docs/justsimple-docs-openapi3</module>
+        <module>../../justsimple-projects/justsimple-docs/justsimple-openapi2-knife4j</module>
+        <module>../../justsimple-projects/justsimple-docs/justsimple-openapi3-knife4j</module>
+        <module>../../justsimple-projects/justsimple-docs/justsimple-swagger2-knife4j</module>
+    </modules>
+</project>

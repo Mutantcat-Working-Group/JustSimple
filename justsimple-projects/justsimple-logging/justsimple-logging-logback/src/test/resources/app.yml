@@ -1,0 +1,28 @@
+justsimple.app:
+  name: demoapp
+
+#justsimple:
+#  logging:
+#    config: "./config/tmp.xml"
+
+justsimple.logging.appender:
+  console:
+    level: DEBUG
+  file:
+    enable: false
+    level: INFO
+    rolling: "logs/demoapp_%d{yyyy-MM-dd}/%i.log"
+    maxFileSize: "1 KB"
+  cloud:
+    level: INFO
+  json:
+    level: DEBUG
+    class: "features.AppenderImpl"
+
+
+justsimple.logging:
+  logger:
+    "root":
+      level: INFO
+    "features":
+      level: TRACE
