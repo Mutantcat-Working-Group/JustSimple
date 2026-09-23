@@ -18,7 +18,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - run: mvn -B -ntp package
+      # The full test suite belongs to the CI workflow. A release tag only has to
+      # prove the reactor compiles and packages; otherwise the network bound and
+      # script-engine bound cases would block publishing on every tag.
+      - run: mvn -B -ntp -DskipTests clean package
 
   package:
     needs: verify
@@ -38,6 +41,60 @@ jobs:
         with:
           name: source
           path: dist/*.tar.gz
+          if-no-files-found: error
+
+  jars:
+    needs: verify
+    runs-on: ubuntu-22.04
+    env:
+      APP_NAME: JustSimple
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve version
+        id: version
+        run: echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: 'maven'
+      - name: Stamp every module with the release version
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          set -euo pipefail
+          # main stays on the SNAPSHOT line, so rewrite the poms for this tag only
+          SNAPSHOT="$(perl -ne 'print $1 if m|<version>([^<]+-SNAPSHOT)</version>|' justsimple-parent/pom.xml | head -1)"
+          test -n "${SNAPSHOT}"
+          test "${SNAPSHOT}" != "${VERSION}"
+          export SNAPSHOT VERSION
+          echo "Stamping ${SNAPSHOT} -> ${VERSION}"
+          find . -name pom.xml -not -path '*/target/*' -print0 \
+            | xargs -0 perl -pi -e 's/\Q$ENV{SNAPSHOT}\E/$ENV{VERSION}/g; s|<version>dev</version>|<version>$ENV{VERSION}</version>|g'
+          perl -pi -e 's/\Q$ENV{SNAPSHOT}\E/$ENV{VERSION}/g' \
+            justsimple/src/main/java/org/mutantcat/justsimple/JustSimple.java README.md
+          head -1 pom.xml | grep -q '^<?xml'
+          test -z "$(grep -rl "${SNAPSHOT}" --include=pom.xml --exclude-dir=.git --exclude-dir=target .)"
+      - name: Build every module jar
+        run: mvn -B -ntp clean package -Dmaven.test.skip=true
+      - name: Collect and bundle jars
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          set -euo pipefail
+          mkdir -p stage dist
+          find . -path '*/target/*.jar' -not -path '*/target/classes/*' \
+            -name "justsimple*-${VERSION}.jar" -exec cp {} stage/ \;
+          test -n "$(ls -A stage)"
+          echo "Collected $(ls stage | wc -l) jars"
+          tar -czf "dist/${APP_NAME}-${VERSION}-jars.tar.gz" -C stage .
+          cp stage/*.jar dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jars
+          path: |
+            dist/*.jar
+            dist/*.tar.gz
           if-no-files-found: error
 
   docker:
@@ -69,13 +126,22 @@ jobs:
             ${{ env.IMAGE }}:latest
 
   publish:
-    needs: package
+    needs: [package, jars]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/download-artifact@v4
         with:
           path: release-assets
           merge-multiple: true
+      # upload-artifact lays files out under their least common ancestor, so
+      # flatten whatever came down before hashing and uploading it.
+      - name: Flatten downloaded assets
+        run: |
+          set -euo pipefail
+          cd release-assets
+          find . -mindepth 2 -type f -exec mv {} . \;
+          find . -mindepth 1 -type d -empty -delete
+          echo "assets to publish: $(find . -type f | wc -l)"
       - name: Generate checksums
         working-directory: release-assets
         run: |
