@@ -126,19 +126,31 @@ jobs:
             ${{ env.IMAGE }}:latest
 
   publish:
-    needs: [package, jars]
-    runs-on: ubuntu-22.04
-    steps:
+      needs: [package, jars]
+      runs-on: ubuntu-22.04
+      steps:
+      # Pull only the release payload. The docker job uploads its own build
+      # artifact, and that one is neither needed here nor reliably retrievable.
+      # download-artifact runs without merge-multiple so each one lands in its
+      # own directory, which the flatten step below collapses.
       - uses: actions/download-artifact@v4
         with:
-          path: release-assets
-          merge-multiple: true
+          name: source
+          path: release-assets/source
+      - uses: actions/download-artifact@v4
+        with:
+          name: jars
+          path: release-assets/jars
       # upload-artifact lays files out under their least common ancestor, so
       # flatten whatever came down before hashing and uploading it.
       - name: Flatten downloaded assets
         run: |
           set -euo pipefail
           cd release-assets
+          for dir in source jars; do
+            test -d "${dir}"
+            test -n "$(ls -A "${dir}")"
+          done
           find . -mindepth 2 -type f -exec mv {} . \;
           find . -mindepth 1 -type d -empty -delete
           echo "assets to publish: $(find . -type f | wc -l)"
