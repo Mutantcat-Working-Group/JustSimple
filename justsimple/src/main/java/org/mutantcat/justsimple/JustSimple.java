@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// 由异猫工作群（mutantcat.org）发行 · https://github.com/Mutantcat-Working-Group
 package org.mutantcat.justsimple;
 
 import org.mutantcat.justsimple.core.AppContext;
