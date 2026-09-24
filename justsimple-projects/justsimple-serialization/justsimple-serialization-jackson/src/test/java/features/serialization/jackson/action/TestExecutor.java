@@ -8,6 +8,7 @@ import org.mutantcat.justsimple.test.JustSimpleTest;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author noear 2024/9/17 created
@@ -123,7 +124,10 @@ public class TestExecutor {
             ContextEmpty ctx = new ContextEmpty();
             ctx.headerMap().add("Content-Type", "text/json");
             ctx.pathNew("/a3");
-            ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + LocalTime.now() + "\"}");
+            //LocalTime.now() 的小数位取决于 JVM 时钟精度：Linux 上是纳秒（9 位），
+            //macOS 上是微秒（6 位），而 DateUtil 只支持到 6 位小数（见 DateUtilTest
+            //的无效格式用例，9 位必须抛异常）。这里截到毫秒，保证任何平台发出的都是受支持格式
+            ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + LocalTime.now().truncatedTo(ChronoUnit.MILLIS) + "\"}");
 
             context.app().routerHandler().handle(ctx);
         }
