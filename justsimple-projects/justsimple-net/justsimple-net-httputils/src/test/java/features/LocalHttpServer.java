@@ -66,6 +66,7 @@ public class LocalHttpServer implements AutoCloseable {
         this.server.createContext("/post", this::handlePost);
         this.server.createContext("/redirect", this::handleRedirect);
         this.server.createContext("/status", this::handleStatus);
+        this.server.createContext("/site", this::handleSite);
 
         this.server.start();
         this.port = this.server.getAddress().getPort();
@@ -224,6 +225,28 @@ public class LocalHttpServer implements AutoCloseable {
                 }
             }
             writeText(exchange, code, "status-" + code);
+        } finally {
+            onExit();
+        }
+    }
+
+    /**
+     * 模拟站点首页：把 /site/ 后面的名字写进标题与正文，
+     * 供"返回内容包含某站点名"这类断言使用（不依赖外网）。
+     */
+    private void handleSite(HttpExchange exchange) throws IOException {
+        onEnter(exchange);
+        try {
+            maybeDelay();
+            String path = exchange.getRequestURI().getPath();
+            String name = path.substring(path.lastIndexOf('/') + 1);
+            if (name.isEmpty()) {
+                name = "site";
+            }
+            String html = "<!DOCTYPE html>\n<html lang=\"zh-Hans-CN\">\n<head>\n<meta charset=\"UTF-8\">\n"
+                    + "<title>" + name + "</title>\n</head>\n<body>\n<h1>" + name + "</h1>\n"
+                    + "<p>welcome to " + name + "</p>\n</body>\n</html>\n";
+            writeText(exchange, 200, html);
         } finally {
             onExit();
         }

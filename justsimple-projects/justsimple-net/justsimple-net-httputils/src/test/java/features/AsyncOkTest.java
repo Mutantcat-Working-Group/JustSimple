@@ -1,5 +1,7 @@
 package features;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mutantcat.justsimple.net.http.HttpResponse;
 import org.mutantcat.justsimple.net.http.HttpUtils;
@@ -15,9 +17,21 @@ public class AsyncOkTest {
         return OkHttpUtilsFactory.getInstance().http(url);
     }
 
+    private static LocalHttpServer server;
+
+    @BeforeAll
+    public static void setup() throws Exception {
+        server = new LocalHttpServer();
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        server.close();
+    }
+
     @Test
     public void case11() throws Exception {
-        CompletableFuture<HttpResponse> htmlFuture = http("https://solon.noear.org/").execAsync("GET");
+        CompletableFuture<HttpResponse> htmlFuture = http(server.url("/site/Solon")).execAsync("GET");
 
         String text = htmlFuture.get().bodyAsString();
         System.out.println(text);
@@ -28,7 +42,7 @@ public class AsyncOkTest {
 
     @Test
     public void case12() throws Exception {
-        CompletableFuture<HttpResponse> htmlFuture = http("https://www.bilibili.com/").execAsync("GET");
+        CompletableFuture<HttpResponse> htmlFuture = http(server.url("/site/bilibili")).execAsync("GET");
 
         String text = htmlFuture.get().bodyAsString();
         System.out.println(text);

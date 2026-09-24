@@ -1,5 +1,7 @@
 package features;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mutantcat.justsimple.net.http.HttpResponse;
 import org.mutantcat.justsimple.net.http.HttpUtilsFactory;
@@ -13,9 +15,21 @@ import java.util.concurrent.CompletableFuture;
 public class AsyncJdkFactoryTest {
     static HttpUtilsFactory httpUtils = new JdkHttpUtilsFactory();
 
+    private static LocalHttpServer server;
+
+    @BeforeAll
+    public static void setup() throws Exception {
+        server = new LocalHttpServer();
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        server.close();
+    }
+
     @Test
     public void case11() throws Exception {
-        CompletableFuture<HttpResponse> htmlFuture = httpUtils.http("https://solon.noear.org/").execAsync("GET");
+        CompletableFuture<HttpResponse> htmlFuture = httpUtils.http(server.url("/site/Solon")).execAsync("GET");
 
         String text = htmlFuture.get().bodyAsString();
         System.out.println(text);
@@ -26,7 +40,7 @@ public class AsyncJdkFactoryTest {
 
     @Test
     public void case12() throws Exception {
-        CompletableFuture<HttpResponse> htmlFuture = httpUtils.http("https://www.bilibili.com/").execAsync("GET");
+        CompletableFuture<HttpResponse> htmlFuture = httpUtils.http(server.url("/site/bilibili")).execAsync("GET");
 
         String text = htmlFuture.get().bodyAsString();
         System.out.println(text);
