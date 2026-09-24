@@ -145,7 +145,9 @@ public class TestExecutor {
             ContextEmpty ctx = new ContextEmpty();
             ctx.headerMap().add("Content-Type", "text/json");
             ctx.pathNew("/a3");
-            ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + OffsetTime.now() + "\"}");
+            //与上面的 LocalTime 同理：OffsetTime.now() 在纳秒精度的 JVM 上会带 9 位小数，
+            //超出 DateUtil 支持的 6 位上限，必须先截断再发送
+            ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + OffsetTime.now().truncatedTo(ChronoUnit.MILLIS) + "\"}");
 
             context.app().routerHandler().handle(ctx);
         }
