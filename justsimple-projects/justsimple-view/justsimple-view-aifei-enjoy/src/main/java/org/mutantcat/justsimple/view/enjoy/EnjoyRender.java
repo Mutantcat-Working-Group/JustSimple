@@ -228,17 +228,20 @@ public class EnjoyRender implements Render {
             return;
         }
 
-        providerOfDebug = Engine.create("debug");
-        providerOfDebug.setDevMode(true);
+        //debug 引擎是进程内共享的（按名字注册在全局表里），直接 create 在重复启动应用时会抛
+        //"Engine already exists : debug"，所以用 createIfAbsent 复用已存在的实例
+        providerOfDebug = Engine.createIfAbsent("debug", engine -> {
+            engine.setDevMode(true);
 
-        try {
-            if (dir.exists()) {
-                providerOfDebug.setBaseTemplatePath(dir.getPath());
-                providerOfDebug.setSourceFactory(new FileSourceFactory());
+            try {
+                if (dir.exists()) {
+                    engine.setBaseTemplatePath(dir.getPath());
+                    engine.setSourceFactory(new FileSourceFactory());
+                }
+            } catch (Exception e) {
+                log.warn(e.getMessage(), e);
             }
-        } catch (Exception e) {
-            log.warn(e.getMessage(), e);
-        }
+        });
     }
 
     private void forRelease() {

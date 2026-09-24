@@ -15,8 +15,6 @@
  */
 package labs.serialization.jackson_xml;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.junit.jupiter.api.Test;
 import org.mutantcat.justsimple.test.HttpTester;
 import org.mutantcat.justsimple.test.JustSimpleTest;
@@ -29,24 +27,43 @@ import org.mutantcat.justsimple.test.JustSimpleTest;
 public class TestDemo extends HttpTester {
     @Test
     public void test0() throws Exception{
-        String json = path("/").get();
+        //xml 序列化器只按 Accept / X-Serialization 匹配，需显式声明
+        //（本模块没有注册 @json 渲染器，不带 Accept 时会回退成对象 toString）
+        String xml = path("/").header("Accept", "text/xml").get();
 
-        JsonNode jsonNode = new XmlMapper().readTree(json);
-
-        assert  jsonNode.get("time1").asText().length() == 16;
-        assert  jsonNode.get("time2").asText().length() == 10;
-        assert  jsonNode.get("time3").asLong() > 1000000000;
+        //时间类型走定制编码器：LocalDateTime->yyyy-MM-dd HH:mm，LocalDate->yyyy-MM-dd，Date->毫秒
+        assert  tagValue(xml, "time1").length() == 16;
+        assert  tagValue(xml, "time2").length() == 10;
+        assert  Long.parseLong(tagValue(xml, "time3")) > 1000000000L;
     }
 
     @Test
     public void hello_test() throws Exception {
         String json = path("/hello").bodyOfJson("").post();
+        //xml body 不参与 java.lang.* 参数的绑定（见 JacksonXmlEntityConverter#changeValue）
         assert "".equals(json);
 
         json = path("/hello?name=world").bodyOfJson("").post();
         assert "world".equals(json);
 
-        json = path("/hello").bodyOfJson("{\"name\":\"world\"}").post();
+        //body 与 query 同时存在时，query 优先
+        json = path("/hello?name=world").body("<name>world</name>", "text/xml").post();
         assert "world".equals(json);
+    }
+
+    /**
+     * 取 xml 里同名标签的文本值
+     */
+    private static String tagValue(String xml, String tag) {
+        String open = "<" + tag + ">";
+        int s = xml.indexOf(open);
+
+        if (s < 0) {
+            return "";
+        }
+
+        int e = xml.indexOf("</" + tag + ">", s);
+
+        return xml.substring(s + open.length(), e);
     }
 }

@@ -61,6 +61,11 @@ public class NetaHttpMinimalTest {
 
     /**
      * 方式A：使用 ProtoHandler（Decoder）模式 + context.sendData
+     *
+     * <p>注意：Decoder 链里的 dst 只是本层的发送队列视图，往里面 offerMessage
+     * 并不会把数据交给传输层写出去（请求会一直等不到响应直到超时）。
+     * 必须用 context.sendData() 从链头走完整的 SND 编码链，
+     * 这与 NetaHttpContextHandler 的做法一致。</p>
      */
     @Test
     public void testProtoHandlerWithContextSendData() throws Throwable {
@@ -81,8 +86,8 @@ public class NetaHttpMinimalTest {
                             resp.setHeader("Content-Type", "text/plain");
                             resp.setHeader("Content-Length", String.valueOf(body.length));
                             resp.streamId(req.streamId());
-                            // 使用 dst.offerMessage 发送响应
-                            dst.offerMessage(resp);
+                            // 从链头走 SND 编码链发出（dst.offerMessage 到不了传输层）
+                            context.sendData(resp);
                         } finally {
                             req.release();
                         }

@@ -60,7 +60,8 @@ public class TestQuickConfig {
         assert ONode.ofJson(output).size() == 6;
 
         //完美
-        assert "{\"b1\":true,\"d1\":1.0,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n1\":\"1\",\"s1\":\"noear\",\"type\":\"MANAGE\"}".equals(output);
+        //boolAsInt 下布尔输出为 0/1；nullAs 全关，故 null 字段被省略
+        assert "{\"b1\":1,\"d1\":1.0,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n1\":\"1\",\"s1\":\"noear\",\"type\":\"MANAGE\"}".equals(output);
     }
 
 

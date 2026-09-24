@@ -16,7 +16,6 @@
 package org.mutantcat.justsimple.server.netahttp.http;
 
 import net.hasor.neta.bytebuf.ByteBuf;
-import net.hasor.neta.bytebuf.ByteBufAllocator;
 import net.hasor.neta.codec.http.*;
 import org.mutantcat.justsimple.Utils;
 import org.mutantcat.justsimple.core.handle.ContextAsyncListener;
@@ -448,10 +447,11 @@ public class NetaHttpContext extends ContextBase {
         byte[] bodyBytes = (_outputStream != null && _outputStream.size() > 0 && _allows_write)
                 ? _outputStream.toByteArray() : new byte[0];
 
-        ByteBuf contentBuf = ByteBufAllocator.DEFAULT.heapBuffer(bodyBytes.length);
-        if (bodyBytes.length > 0) {
-            contentBuf.writeBytes(bodyBytes);
-        }
+        // 必须用 ByteBuf.wrap() 包装已有的字节数组。
+        // ByteBufAllocator.DEFAULT.heapBuffer() 返回的是引用计数的池化 buffer，
+        // writeBytes() 写入后 readableBytes() 仍为 0，编解码链会写出一个空 body，
+        // 而响应头里的 Content-Length 又是真实长度，客户端会一直等满 body 而超时。
+        ByteBuf contentBuf = ByteBuf.wrap(bodyBytes);
 
         // 重新构造 response，确保 content 正确绑定
         FullHttpResponse resp = new DefaultFullHttpResponse(

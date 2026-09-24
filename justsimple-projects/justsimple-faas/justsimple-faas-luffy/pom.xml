@@ -74,4 +74,24 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <!-- JDK 15 起 Nashorn 已从 JDK 中移除，luffy 的 javascript 执行器取不到
+             ScriptEngine 会抛 NPE。这里在 JDK 15+ 给测试补上 org.openjdk.nashorn
+             独立版，让 FaasTest 能继续真正校验 js 函数的执行。 -->
+        <profile>
+            <id>justsimple-faas-luffy-jdk15-nashorn</id>
+            <activation>
+                <jdk>[15,)</jdk>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.openjdk.nashorn</groupId>
+                    <artifactId>nashorn-core</artifactId>
+                    <version>15.7</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
 </project>

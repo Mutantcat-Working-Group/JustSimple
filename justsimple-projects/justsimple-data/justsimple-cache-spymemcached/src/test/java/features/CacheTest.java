@@ -16,13 +16,18 @@
 package features;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.mutantcat.justsimple.annotation.Inject;
 import org.mutantcat.justsimple.data.cache.CacheService;
 import org.mutantcat.justsimple.test.JustSimpleTest;
 
 /**
  * @author noear 2023/2/16 created
+ * <p>
+ * 这些用例要连真实的 Memcached（app.yml 里配的是 localhost:11211）。
+ * CI 环境没有这个服务，端口不通时整个类跳过；本机起了服务就会真正执行。
  */
+@EnabledIf("isServiceAvailable")
 @JustSimpleTest
 public class CacheTest {
     @Inject
@@ -62,5 +67,16 @@ public class CacheTest {
         assert userM.id == cacheService.get("test", UserM.class).id;
         cacheService.remove("test");
         assert cacheService.get("test", UserM.class) == null;
+    }
+
+    /**
+     * 仅当本机 Memcached 端口可连接时才启用，避免 CI 上因缺少服务而误报失败。
+     */
+    static boolean isServiceAvailable() {
+        try (java.net.Socket socket = new java.net.Socket("127.0.0.1", 11211)) {
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

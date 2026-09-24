@@ -1,5 +1,13 @@
 
 
+# app.yml 中的 server.request.* 限制需要在这里重复一份：ServerProps 是 JVM 级静态配置，
+# 只按第一个启动的 app 读取，缺失的键会回落到默认值从而影响同 fork 内后续 app 的断言。
+server:
+  request:
+    maxBodySize: 48kb
+    maxFileSize: 2mb
+    maxPartCount: 4
+
 server.ssl.keyStoreType: "JKS"
 server.ssl.keyStore: "classpath:ssl_jks/keystore.jks" #（本地绝对位置）或 "classpath:demo.pfx"（资源目录位置）
 server.ssl.keyPassword: "123456"

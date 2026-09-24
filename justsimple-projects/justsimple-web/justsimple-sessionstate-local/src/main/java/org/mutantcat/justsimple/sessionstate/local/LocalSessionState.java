@@ -64,6 +64,11 @@ public class LocalSessionState extends SessionStateBase {
     public String sessionId() {
         if (sessionId == null) {
             sessionId = sessionIdGet(false);
+
+            //会话被访问时即刷新访问时间。若只靠 sessionPublish() 刷新，
+            //同一毫秒内"创建+发布"会让 lastAccessTime 退化成等于 creationTime，
+            //且处理器读到的永远是上一次请求的访问时间（差一个请求）。
+            _store.updateAccessedTime(sessionId);
         }
         return sessionId;
     }

@@ -332,7 +332,9 @@ public final class JustSimpleProps extends Props {
      */
     @Override
     public void loadAdd(Properties props) {
-        loadAddDo(props, app.isMain() || testing == false, false);
+        // 单测隔离：测试模式下不把配置同步到系统属性，否则同一个 JVM 里的
+        // 后续应用（或测试）会通过 System.getProperties() 继承上一个应用的配置
+        loadAddDo(props, testing == false, false);
     }
 
     /**

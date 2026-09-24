@@ -16,7 +16,9 @@
 package org.mutantcat.justsimple.server;
 
 import org.mutantcat.justsimple.JustSimple;
+import org.mutantcat.justsimple.JustSimpleProps;
 import org.mutantcat.justsimple.Utils;
+import org.mutantcat.justsimple.core.Props;
 import org.mutantcat.justsimple.core.util.Assert;
 import org.mutantcat.justsimple.core.util.IoUtil;
 
@@ -100,8 +102,23 @@ public class ServerProps {
         //空的，别去掉
     }
 
+    /**
+     * 没有启动应用时的兜底配置。
+     *
+     * <p>直接基于传输协议使用服务端上下文时（例如单元测试里手工构造 NetaHttpContext）,
+     * 会在没有 JustSimple 应用上下文的情况下触发本类的静态初始化。此时
+     * {@link JustSimple#cfg()} 返回 null, 直接调用会抛 NullPointerException。
+     * 兜底配置取不到项时的结果与真实环境未配置该项时的默认值一致。</p>
+     */
+    private static final Props PROPS_OF_NO_APP = new Props();
+
+    private static Props cfg() {
+        JustSimpleProps props = JustSimple.cfg();
+        return props == null ? PROPS_OF_NO_APP : props;
+    }
+
     static {
-        output_meta = JustSimple.cfg().getInt("justsimple.output.meta", 0) > 0;
+        output_meta = cfg().getInt("justsimple.output.meta", 0) > 0;
         request_tempDir = IoUtil.getTempDirAsFile("justsimple-server");
 
         String tmp = null;
@@ -110,30 +127,30 @@ public class ServerProps {
         // for request
         //
 
-        tmp = JustSimple.cfg().get(ServerConstants.SERVER_REQUEST_FILESIZETHRESHOLD, "").trim().toLowerCase();//k数
+        tmp = cfg().get(ServerConstants.SERVER_REQUEST_FILESIZETHRESHOLD, "").trim().toLowerCase();//k数
         request_fileSizeThreshold = (int) getSize(tmp, 512L * 1024L);//512k
 
 
-        tmp = JustSimple.cfg().get(ServerConstants.SERVER_REQUEST_MAXHEADERSIZE, "").trim().toLowerCase();//k数
+        tmp = cfg().get(ServerConstants.SERVER_REQUEST_MAXHEADERSIZE, "").trim().toLowerCase();//k数
         request_maxHeaderSize = (int) getSize(tmp, 8L * 1024L);//8k
 
-        tmp = JustSimple.cfg().get(ServerConstants.SERVER_REQUEST_MAXBODYSIZE, "").trim().toLowerCase();//k数
+        tmp = cfg().get(ServerConstants.SERVER_REQUEST_MAXBODYSIZE, "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
             //兼容旧的配置
-            tmp = JustSimple.cfg().get(ServerConstants.SERVER_REQUEST_MAXREQUESTSIZE, "").trim().toLowerCase();//k数
+            tmp = cfg().get(ServerConstants.SERVER_REQUEST_MAXREQUESTSIZE, "").trim().toLowerCase();//k数
         }
         request_maxBodySize = getSize(tmp, 2L * 1024L * 1024L);//2m
 
-        tmp = JustSimple.cfg().get(ServerConstants.SERVER_REQUEST_MAXFILESIZE, "").trim().toLowerCase();//k数
+        tmp = cfg().get(ServerConstants.SERVER_REQUEST_MAXFILESIZE, "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
             request_maxFileSize = request_maxBodySize;
         } else {
             request_maxFileSize = getSize(tmp, 2L * 1024L * 1024L);//2m
         }
 
-        request_maxPartCount = JustSimple.cfg().getInt(ServerConstants.SERVER_REQUEST_MAXPARTCOUNT, 1000);
+        request_maxPartCount = cfg().getInt(ServerConstants.SERVER_REQUEST_MAXPARTCOUNT, 1000);
 
-        tmp = JustSimple.cfg().get(ServerConstants.SERVER_REQUEST_ENCODING, "").trim();
+        tmp = cfg().get(ServerConstants.SERVER_REQUEST_ENCODING, "").trim();
 
         if (Utils.isEmpty(tmp)) {
             request_encoding = JustSimple.encoding();
@@ -141,15 +158,15 @@ public class ServerProps {
             request_encoding = tmp;
         }
 
-        //request_useTempfile = JustSimple.cfg().getBool(ServerConstants.SERVER_REQUEST_USETEMPFILE, false);
+        //request_useTempfile = cfg().getBool(ServerConstants.SERVER_REQUEST_USETEMPFILE, false);
 
-        request_useRawpath = JustSimple.cfg().getBool(ServerConstants.SERVER_REQUEST_USERAWPATH, false);
+        request_useRawpath = cfg().getBool(ServerConstants.SERVER_REQUEST_USERAWPATH, false);
 
 
         //
         // for response
         //
-        tmp = JustSimple.cfg().get(ServerConstants.SERVER_RESPONSE_ENCODING, "").trim();
+        tmp = cfg().get(ServerConstants.SERVER_RESPONSE_ENCODING, "").trim();
 
         if (Utils.isEmpty(tmp)) {
             response_encoding = JustSimple.encoding();

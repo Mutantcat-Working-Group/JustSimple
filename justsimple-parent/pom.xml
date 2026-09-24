@@ -2400,6 +2400,25 @@
                 </dependency>
             </dependencies>
         </profile>
+        <!-- JDK 16+ 收紧了 java.base 的强封装，部分序列化库（如 chronicle-bytes）要反射访问 java.lang.reflect。
+             仅在 JDK 16+ 时给测试 fork 补上 addOpens 参数，JDK 8 不识别这些参数故不启用。 -->
+        <profile>
+            <id>justsimple-test-jdk16-add-opens</id>
+            <activation>
+                <jdk>[16,)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <argLine>--add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/sun.security.ssl=ALL-UNNAMED</argLine>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>

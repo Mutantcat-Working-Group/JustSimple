@@ -22,7 +22,6 @@ import org.apache.fury.config.Language;
 import org.apache.fury.resolver.AllowListChecker;
 import org.mutantcat.justsimple.core.handle.Context;
 import org.mutantcat.justsimple.core.handle.ModelAndView;
-import org.mutantcat.justsimple.core.util.ClassUtil;
 import org.mutantcat.justsimple.lang.Nullable;
 import org.mutantcat.justsimple.serialization.EntityBytesSerializer;
 import org.mutantcat.justsimple.serialization.EntitySerializer;
@@ -140,20 +139,10 @@ public class FuryBytesSerializer implements EntityBytesSerializer {
      */
     @Override
     public Object deserialize(byte[] data, Type toType) throws IOException {
-        if (toType == null) {
-            return fury.deserialize(data);
-        } else {
-            if (toType instanceof Class) {
-                //处理匿名名类
-                Class<?> toClz = (Class<?>) toType;
-                if (toClz.isAnonymousClass()) {
-                    toType = toClz.getGenericSuperclass();
-                }
-            }
-
-            Class<?> clz = ClassUtil.getTypeClass(toType);
-            return fury.deserializeJavaObject(data, clz);
-        }
+        // fury 0.10.3 的带类型入口 deserializeJavaObject(data, clz) 在集合上不可靠：
+        // 部分配置下抛 ArrayIndexOutOfBoundsException，另一些配置下还会静默返回空集合。
+        // 因此与 KryoBytesSerializer 一致，按数据里自带的类型还原，忽略 toType 提示。
+        return fury.deserialize(data);
     }
 
     /**

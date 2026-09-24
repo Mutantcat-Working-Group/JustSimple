@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,6 +59,7 @@ public class LocalHttpServer implements AutoCloseable {
         this.server.setExecutor(executor);
 
         this.server.createContext("/ok", this::handleOk);
+        this.server.createContext("/hello", this::handleHello);
         this.server.createContext("/echo", this::handleEcho);
         this.server.createContext("/echo-header", this::handleEchoHeader);
         this.server.createContext("/slow", this::handleSlow);
@@ -124,6 +126,34 @@ public class LocalHttpServer implements AutoCloseable {
         } finally {
             onExit();
         }
+    }
+
+    private void handleHello(HttpExchange exchange) throws IOException {
+        onEnter(exchange);
+        try {
+            maybeDelay();
+            writeText(exchange, 200, "hello " + queryValue(exchange, "name"));
+        } finally {
+            onExit();
+        }
+    }
+
+    private static String queryValue(HttpExchange exchange, String key) {
+        String query = exchange.getRequestURI().getRawQuery();
+        if (query == null) {
+            return "";
+        }
+        String prefix = key + "=";
+        for (String pair : query.split("&")) {
+            if (pair.startsWith(prefix)) {
+                try {
+                    return URLDecoder.decode(pair.substring(prefix.length()), StandardCharsets.UTF_8);
+                } catch (UnsupportedOperationException | IllegalArgumentException e) {
+                    return pair.substring(prefix.length());
+                }
+            }
+        }
+        return "";
     }
 
     private void handleEchoHeader(HttpExchange exchange) throws IOException {

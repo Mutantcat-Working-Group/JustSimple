@@ -34,7 +34,8 @@ import java.util.Map;
 public class TestApp {
     public static void main(String[] args) {
         JustSimple.start(TestApp.class, args, app -> {
-            app.onEvent(SnackStringSerializer.class, factory -> initMvcJsonCustom(factory));
+            //序列化器由插件创建，用异步订阅在其注册后定制
+            app.context().getWrapAsync(SnackStringSerializer.class, bw -> initMvcJsonCustom((SnackStringSerializer) bw.raw()));
         });
     }
 

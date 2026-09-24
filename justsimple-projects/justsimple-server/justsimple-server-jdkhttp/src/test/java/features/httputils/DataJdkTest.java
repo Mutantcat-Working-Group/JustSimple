@@ -10,6 +10,7 @@ import org.mutantcat.justsimple.net.http.impl.jdk.JdkHttpUtilsFactory;
 import org.mutantcat.justsimple.test.JustSimpleTest;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -97,7 +98,7 @@ public class DataJdkTest {
                     codeHolder.set(resp.code());
                     countDownLatch.countDown();
                 });
-        countDownLatch.await();
+        countDownLatch.await(5, TimeUnit.SECONDS);
 
         assert codeHolder.get() == 200;
     }
@@ -111,7 +112,7 @@ public class DataJdkTest {
                     codeHolder.set(resp.code());
                     countDownLatch.countDown();
                 });
-        countDownLatch.await();
+        countDownLatch.await(5, TimeUnit.SECONDS);
 
         assert codeHolder.get() == 200;
     }
@@ -125,7 +126,7 @@ public class DataJdkTest {
                     codeHolder.set(resp.code());
                     countDownLatch.countDown();
                 });
-        countDownLatch.await();
+        countDownLatch.await(5, TimeUnit.SECONDS);
 
         assert codeHolder.get() == 200;
     }
@@ -172,7 +173,7 @@ public class DataJdkTest {
                     codeHolder.set(resp.code());
                     countDownLatch.countDown();
                 });
-        countDownLatch.await();
+        countDownLatch.await(5, TimeUnit.SECONDS);
 
         assert codeHolder.get() == 200;
     }
@@ -186,7 +187,7 @@ public class DataJdkTest {
                     codeHolder.set(resp.code());
                     countDownLatch.countDown();
                 });
-        countDownLatch.await();
+        countDownLatch.await(5, TimeUnit.SECONDS);
 
         assert codeHolder.get() == 200;
     }
@@ -200,7 +201,7 @@ public class DataJdkTest {
                     codeHolder.set(resp.code());
                     countDownLatch.countDown();
                 });
-        countDownLatch.await();
+        countDownLatch.await(5, TimeUnit.SECONDS);
 
         assert codeHolder.get() == 200;
     }

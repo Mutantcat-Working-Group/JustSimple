@@ -19,14 +19,23 @@ public class BridgeMethodTest {
 
         assert classWrap.getDeclaredMethodEgggs().size() == 0;
 
-        MethodEggg[] methodEgggs = classWrap.getPublicMethodEgggs().toArray(new MethodEggg[0]);
-        assert methodEgggs[0].getName().equals("saveAll");
-        assert methodEgggs[0].getGenericReturnType() instanceof ParameterizedType;
-        assert methodEgggs[1].getName().equals("saveOne");
-        assert methodEgggs[1].getGenericReturnType().equals(SysResourcePermission.class);
+        // Class.getMethods() 的方法顺序 JDK 不保证，同一次构建换次 JVM 也可能会变，故按名字查找而非下标
+        MethodEggg saveAll = findByName(classWrap, "saveAll");
+        assert saveAll.getGenericReturnType() instanceof ParameterizedType;
+
+        MethodEggg saveOne = findByName(classWrap, "saveOne");
+        assert saveOne.getGenericReturnType().equals(SysResourcePermission.class);
 
         System.out.println(Arrays.toString(SysResourcePermissionController.class.getDeclaredMethods()));
         //=> [public java.util.List com.example.demo.App$SysResourcePermissionController.saveAll(java.util.List)]
+    }
+
+    private MethodEggg findByName(ClassEggg classWrap, String name) {
+        return classWrap.getPublicMethodEgggs()
+                .stream()
+                .filter(m -> name.equals(m.getName()))
+                .findFirst()
+                .orElse(null);
     }
 
     public class SysResourcePermissionController extends BaseController<SysResourcePermissionService, SysResourcePermission, SysResourcePermissionId> {

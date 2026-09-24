@@ -46,7 +46,9 @@ public abstract class AbstractResponse implements HttpResponse, Reset {
     /**
      * 正文编码方式
      */
-    private String contentType = HeaderValue.ContentType.TEXT_HTML_UTF8;
+    //不预设默认值：框架没设置 Content-Type 时不应凭空输出一个 text/html，
+    //与 jdkhttp/smarthttp 的行为保持一致（见 ContentTypeHandler 的 ct0 用例）
+    private String contentType = null;
 
     /**
      * 是否关闭Socket连接通道
@@ -59,7 +61,7 @@ public abstract class AbstractResponse implements HttpResponse, Reset {
         outputStream.reset();
         headers.clear();
         setHttpStatus(HttpStatus.OK);
-        contentType = HeaderValue.ContentType.TEXT_HTML_UTF8;
+        contentType = null;
         contentLength = -1;
         this.closed = false;
         this.fastFlag = true;

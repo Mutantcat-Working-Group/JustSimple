@@ -50,6 +50,12 @@
             <artifactId>justsimple-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.mutantcat.justsimple</groupId>
+            <artifactId>justsimple-server-smarthttp</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
