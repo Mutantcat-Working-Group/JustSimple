@@ -271,6 +271,12 @@ public class DateUtil {
                 }
             }
 
+            // 以 Z 结尾的 UTC 纯时间：UTC 时区下 OffsetTime.now().toString() 会产出 03:30:34.608152Z，
+            // 小数位被截成 3 位后剩下的 Z 无法交给 LocalTime 解析，需按零时区偏移还原成瞬时值
+            if (normalized.endsWith("Z")) {
+                return Date.from(OffsetTime.parse(normalized).atDate(LocalDate.now()).toInstant());
+            }
+
             DateTimeFormatter fmt = normalized.contains(".") ?
                     getFormatter("HH:mm:ss.SSS") : getFormatter("HH:mm:ss");
             LocalTime time = LocalTime.parse(normalized, fmt);

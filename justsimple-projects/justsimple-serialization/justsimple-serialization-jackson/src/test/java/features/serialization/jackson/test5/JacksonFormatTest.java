@@ -13,6 +13,7 @@ import org.mutantcat.justsimple.test.JustSimpleTest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +27,13 @@ public class JacksonFormatTest {
 
     private static final String FORMATTED_TIME = FORMATTED_DATE + " 12:34:56";
 
+    // 解析时区需与 jackson_format_test.yml 里 dateAsTimeZone 配置的 GMT+8 保持一致，
+    // 否则 JVM 默认时区不同时（CI 上为 UTC），序列化结果会整体偏移而断言失败
     private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    static {
+        TIME_FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+    }
 
     @Inject
     JacksonEntityConverter entityConverter;

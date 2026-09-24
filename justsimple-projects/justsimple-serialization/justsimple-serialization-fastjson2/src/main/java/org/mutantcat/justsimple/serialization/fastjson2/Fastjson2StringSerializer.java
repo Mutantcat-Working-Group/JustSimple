@@ -34,6 +34,7 @@ import org.mutantcat.justsimple.serialization.prop.JsonPropsUtil2;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.ZoneId;
 
 /**
  * Fastjson2 字符串序列化
@@ -248,6 +249,15 @@ public class Fastjson2StringSerializer implements EntityStringSerializer {
             if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
                 //这个方案，可以支持全局配置，且个性注解不会失效；//用编码器会让个性注解失效
                 getSerializeConfig().getContext().setDateFormat(jsonProps.dateAsFormat);
+
+                //dateAsTimeZone 也要一起设到 writer 上下文上。其它序列化器都是走
+                //JsonPropsUtil2.dateAsFormat 的编码器链路，时区在那儿生效；而这里改用
+                //全局 setDateFormat 后没有对应处理，dateAsTimeZone 会被静默丢弃：
+                //只要 JVM 默认时区不是配置的时区（例如 UTC 的 CI 环境），输出的时间就
+                //会整体偏移。上面实测：仅 setDateFormat 得 09:39:53，补 setZoneId 才得 17:39:53。
+                if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
+                    getSerializeConfig().getContext().setZoneId(ZoneId.of(jsonProps.dateAsTimeZone));
+                }
             }
 
             //JsonPropsUtil.dateAsFormat(this, jsonProps);

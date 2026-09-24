@@ -121,6 +121,12 @@ class DateUtilTest {
                 // FORMAT_15: "HH:mm:ss.SSSSSS" - 时间带微秒
                 Arguments.of("14:30:45.123456", "FORMAT_15"),
 
+                // FORMAT_15_Z: "HH:mm:ss.SSSSSS'Z'" - UTC 纯时间（OffsetTime.now() 在 UTC 时区的输出）
+                Arguments.of("14:30:45.123456Z", "FORMAT_15_Z"),
+
+                // FORMAT_8_Z: "HH:mm:ss'Z'" - 不带小数的 UTC 纯时间
+                Arguments.of("14:30:45Z", "FORMAT_8_Z"),
+
                 // FORMAT_14_a: "yyyyMMddHHmmss" - 紧凑格式
                 Arguments.of("20231025143045", "FORMAT_14_a"),
 
